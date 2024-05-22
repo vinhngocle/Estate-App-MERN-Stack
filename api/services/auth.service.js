@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+// import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
 
 export const create = async (newUser) => {
@@ -15,12 +16,12 @@ export const create = async (newUser) => {
 };
 
 export const verifyUser = async (user) => {
-  const existUser = await this.existUser(user.username);
-  if (!existUser) return
+  const checkUser = await existUser(user.username);
+  if (!checkUser) return;
 
-  return await bcrypt.compare(user.password, existUser.password)
+  return await bcrypt.compare(user.password, checkUser.password);
 };
 
 export const existUser = async (username) => {
   return await prisma.user.findUnique({ where: { username } });
-}
+};
