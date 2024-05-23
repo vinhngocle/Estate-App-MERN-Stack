@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
 
 export const create = async (newUser) => {
@@ -15,11 +15,28 @@ export const create = async (newUser) => {
   });
 };
 
-export const verifyUser = async (user) => {
+export const verifyUser = async (user, expiresIn) => {
   const checkUser = await existUser(user.username);
-  if (!checkUser) return;
+  if (!checkUser) {
+    console.log('user not found');
+    return
+  };
 
-  return await bcrypt.compare(user.password, checkUser.password);
+  const isPasswordValid = await bcrypt.compare(user.password, checkUser.password);
+  if (!isPasswordValid) {
+    console.log('password mismatch');
+    return
+  };
+
+  const token = jwt.sign(
+    {
+      id: user.id,
+    },
+    process.env.JWT_SECRET_KEY,
+    { expiresIn }
+  );
+
+  return token;
 };
 
 export const existUser = async (username) => {
