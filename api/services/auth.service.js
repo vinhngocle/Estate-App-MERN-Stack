@@ -3,9 +3,16 @@ import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
 import logger from "../utils/logger.js";
 
+
 export const create = async (newUser) => {
+  const checkUser = await existUser(newUser.username);
+  if (checkUser) {
+    logger.error('username already exists.');
+    return
+  };
+
   const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
+  const hashedPassword = await bcrypt.hash(newUser.password, saltRounds); 
 
   return await prisma.user.create({
     data: {
