@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
+import logger from "../utils/logger.js";
 
 export const create = async (newUser) => {
   const saltRounds = 10;
@@ -18,13 +19,13 @@ export const create = async (newUser) => {
 export const verifyUser = async (user, expiresIn) => {
   const checkUser = await existUser(user.username);
   if (!checkUser) {
-    console.log('user not found');
+    logger.error('username not found.');
     return
   };
 
   const isPasswordValid = await bcrypt.compare(user.password, checkUser.password);
   if (!isPasswordValid) {
-    console.log('password mismatch');
+    logger.error('password not match.');
     return
   };
 
@@ -35,6 +36,11 @@ export const verifyUser = async (user, expiresIn) => {
     process.env.JWT_SECRET_KEY,
     { expiresIn }
   );
+
+  if (!token) {
+    logger.error('token is empty.');
+    return
+  }
 
   return token;
 };
