@@ -4,18 +4,20 @@ import Joi from "joi";
 
 const schema = Joi.object({
   username: Joi.string().required(),
-  email: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ["com", "net"] },
+  }),
   password: Joi.string().required(),
 });
 
 export const register = async (req, res) => {
   try {
-    const { error, value } = await schema.validate(req.body);
+    const { error } = await schema.validate(req.body);
     if (error) {
       return res.send({ message: error.details });
     }
-    console.log(error);
-    console.log(value);
+
     const newUser = await authService.create(req.body, { abortEarly: false });
     if (!newUser) {
       return res.status(402).send({ message: "User not created." });
@@ -32,6 +34,10 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
+    const { error } = await schema.validate(req.body);
+    if (error) {
+      return res.send({ message: error.details });
+    }
     const expiresIn = 1000 * 60 * 60 * 24 * 7;
     const token = await authService.verifyUser(req.body, expiresIn);
 
@@ -46,7 +52,10 @@ export const login = async (req, res) => {
         maxAge: expiresIn,
       })
       .status(200)
-      .json({ message: "Login Successfully." });
+      .json({
+        message: "Login Successfully.",
+        data: { ...req.body, avatar: req.body.avatar || null, token },
+      });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ message: "Failed to Login!" });
