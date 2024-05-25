@@ -42,6 +42,25 @@ export const updateUserById = async (id, user) => {
   return await prisma.user.update({
     where: { id },
     data: user,
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+};
+
+export const deleteUser = async (id) => {
+  const checkId = await existUserId(id);
+  if (!checkId) {
+    logger.error("user id not exists.");
+    return;
+  }
+
+  return await prisma.user.delete({
+    where: { id },
   });
 };
 
