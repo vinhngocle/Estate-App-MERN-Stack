@@ -1,15 +1,18 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import postRoute from "./routes/post.route.js";
-import authRoute from "./routes/auth.route.js";
+import helmet from "helmet";
+import cors from "cors";
+import route from "./routes/route.js";
+
 const app = express();
 const PORT = 8800;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
+app.use(cors());
 
-app.use("/api/posts", postRoute);
-app.use("/api/auth", authRoute);
+app.use("/api/", route);
 
 app.listen(PORT, () => {
   console.log("Server is running");

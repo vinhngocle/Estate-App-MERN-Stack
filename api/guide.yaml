@@ -1,6 +1,6 @@
 # config env
 DATABASE_URL
-JWT_SERECT_KEY
+JWT_SECRET_KEY
 
 # random key for jwt_serect_key
 openssl rand -base64 32
