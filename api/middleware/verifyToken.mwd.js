@@ -12,7 +12,8 @@ export const verifyToken = (req, res, next) => {
       return res.status(403).json({ message: "Token is not valid!" });
     }
 
+    console.log('payload', payload);
     req.userId = payload.id;
-    next();
   });
+  next();
 };

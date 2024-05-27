@@ -10,11 +10,23 @@ export const getPostById = async (id) => {
   });
 };
 
-export const createPost = async (post, userId) => {
+export const createPost = async (post, tokenUserId) => {
   return await prisma.post.create({
     data: {
       ...post,
-      userId,
+      userId: tokenUserId,
     },
   });
 };
+
+export const deletePost = async (id) => {
+  return await prisma.post.delete({
+    where: { id },
+  })
+}
+
+export const existsPost = async (id) => {
+  return await prisma.post.findUnique({
+    while: { id },
+  })
+}

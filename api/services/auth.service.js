@@ -39,6 +39,7 @@ export const verifyUser = async (user, expiresIn) => {
     return;
   }
 
+  console.log('user.id', user);
   const token = jwt.sign(
     {
       id: user.id,
