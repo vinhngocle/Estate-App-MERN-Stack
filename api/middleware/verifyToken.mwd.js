@@ -1,19 +1,24 @@
 import jwt from "jsonwebtoken";
+import logger from "../utils/logger.js";
 
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
+  const accessToken = req.headers["access-token"];
 
-  if (!token) {
-    return res.status(401).json({ message: "Not Authenticated!" });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
-    if (err) {
-      return res.status(403).json({ message: "Token is not valid!" });
+  if (accessToken) {
+    try {
+      const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+      req.accessTokenPayLoad = decoded;
+      console.log('decoded', decoded);
+      next();
+    } catch (err) {
+      logger.err(err);
+      return res.status(401).json({
+        msg: "Invalid access token.",
+      });
     }
-
-    console.log('payload', payload);
-    req.userId = payload.id;
-  });
-  next();
+  } else {
+    return res.status(400).json({
+      msg: "Invalid access token.",
+    });
+  }
 };

@@ -12,5 +12,5 @@ console-ninja node --watch app.js
 npx prisma db push
 
 # run project
-- npm intall
+- npm install
 - npm run start

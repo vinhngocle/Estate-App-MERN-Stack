@@ -10,11 +10,11 @@ export const getPostById = async (id) => {
   });
 };
 
-export const createPost = async (post, tokenUserId) => {
+export const createPost = async (post, userId) => {
   return await prisma.post.create({
     data: {
       ...post,
-      userId: tokenUserId,
+      userId,
     },
   });
 };

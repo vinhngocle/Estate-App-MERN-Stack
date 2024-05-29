@@ -15,14 +15,16 @@ export const register = async (req, res) => {
   try {
     const { error } = await schema.validate(req.body);
     if (error) {
-      return res.send({ message: error.details });
+      return res.json({ message: error.details });
     }
 
-    const newUser = await authService.create(req.body, { abortEarly: false });
-    if (!newUser) {
-      return res.status(402).send({ message: "User not created." });
+    const existUser = await authService.existUser(req.body.username);
+    if (existUser) {
+      logger.error("User already exists.");
+      return res.status(400).json({ message: "User already exists." });;
     }
 
+    const newUser = await authService.create(req.body);
     res
       .status(201)
       .json({ message: "User created successfully.", data: newUser });
@@ -36,25 +38,28 @@ export const login = async (req, res) => {
   try {
     const { error } = await schema.validate(req.body);
     if (error) {
-      return res.send({ message: error.details });
+      return res.json({ message: error.details });
     }
-    const expiresIn = 1000 * 60 * 60 * 24 * 7;
-    const token = await authService.verifyUser(req.body, expiresIn);
+
+    const existUser = await authService.existUser(req.body.username);
+    if (!existUser) {
+      return res.json("User not found.");
+    }
+    const { password: userPassword, ...userInfo } = existUser;
+
+    const expiresTime = '7d';
+    const token = await authService.verifyUser(req.body, userPassword, expiresTime);
 
     if (!token) {
       return res.status(401).json({ message: "Invalid Credentials!" });
     }
+    req.TEST_USER_ID = userInfo.id
 
     res
-      .cookie("token", token, {
-        httpOnly: true,
-        // secure: true,
-        maxAge: expiresIn,
-      })
       .status(200)
       .json({
         message: "Login Successfully.",
-        data: { ...req.body, avatar: req.body.avatar || null, token },
+        data: { ...userInfo, token },
       });
   } catch (error) {
     logger.error(error);

@@ -26,7 +26,6 @@ export const getPost = async (req, res) => {
 
 export const addPost = async (req, res) => {
   try {
-    console.log('req', req.userId);
     const post = await postService.createPost(req.body, req.userId);
     res.status(200).send({ message: "Get post successfully.", data: post });
   } catch (error) {

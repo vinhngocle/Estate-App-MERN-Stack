@@ -1,17 +1,10 @@
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
 import logger from "../utils/logger.js";
+import { hashPassword, verifyHashPassword } from "../utils/passwordHelper.js";
 
 export const create = async (newUser) => {
-  const checkUser = await existUser(newUser.username);
-  if (checkUser) {
-    logger.error("username already exists.");
-    return;
-  }
-
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
+  const hashedPassword = await hashPassword(10, newUser.password);
 
   return await prisma.user.create({
     data: {
@@ -23,37 +16,26 @@ export const create = async (newUser) => {
   });
 };
 
-export const verifyUser = async (user, expiresIn) => {
-  const checkUser = await existUser(user.username);
-  if (!checkUser) {
-    logger.error("username not found.");
-    return;
-  }
+export const verifyUser = async (user, hashPassword, expireTime) => {
+  const isPasswordValid = await verifyHashPassword(user.password, hashPassword);
 
-  const isPasswordValid = await bcrypt.compare(
-    user.password,
-    checkUser.password
-  );
   if (!isPasswordValid) {
     logger.error("password not match.");
     return;
   }
 
-  console.log('user.id', user);
-  const token = jwt.sign(
-    {
-      id: user.id,
-    },
+  const accessToken = jwt.sign(
+    { userId: user._id },
     process.env.JWT_SECRET_KEY,
-    { expiresIn }
+    { expiresIn: expireTime }
   );
 
-  if (!token) {
+  if (!accessToken) {
     logger.error("token is empty.");
     return;
   }
 
-  return token;
+  return accessToken;
 };
 
 export const existUser = async (username) => {
