@@ -22,11 +22,11 @@ export const createPost = async (post, userId) => {
 export const deletePost = async (id) => {
   return await prisma.post.delete({
     where: { id },
-  })
-}
+  });
+};
 
 export const existsPost = async (id) => {
   return await prisma.post.findUnique({
-    while: { id },
-  })
-}
+    where: { id },
+  });
+};

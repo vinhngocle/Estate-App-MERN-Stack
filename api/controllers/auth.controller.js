@@ -21,7 +21,7 @@ export const register = async (req, res) => {
     const existUser = await authService.existUser(req.body.username);
     if (existUser) {
       logger.error("User already exists.");
-      return res.status(400).json({ message: "User already exists." });;
+      return res.status(400).json({ message: "User already exists." });
     }
 
     const newUser = await authService.create(req.body);
@@ -47,20 +47,22 @@ export const login = async (req, res) => {
     }
     const { password: userPassword, ...userInfo } = existUser;
 
-    const expiresTime = '7d';
-    const token = await authService.verifyUser(req.body, userPassword, expiresTime);
+    const expiresTime = "7d";
+    req.body.id = userInfo.id;
+    const token = await authService.verifyUser(
+      req.body,
+      userPassword,
+      expiresTime
+    );
 
     if (!token) {
       return res.status(401).json({ message: "Invalid Credentials!" });
     }
-    req.TEST_USER_ID = userInfo.id
 
-    res
-      .status(200)
-      .json({
-        message: "Login Successfully.",
-        data: { ...userInfo, token },
-      });
+    res.status(200).json({
+      message: "Login Successfully.",
+      data: { ...userInfo, token },
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ message: "Failed to Login!" });

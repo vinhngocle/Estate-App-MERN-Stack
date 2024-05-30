@@ -5,7 +5,7 @@ import userRoute from "./user.route.js";
 
 const route = express();
 
-route.use("/posts", postRoute);
+route.use("/post", postRoute);
 route.use("/auth", authRoute);
 route.use("/user", userRoute);
 

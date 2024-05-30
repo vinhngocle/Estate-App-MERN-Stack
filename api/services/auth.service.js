@@ -25,7 +25,7 @@ export const verifyUser = async (user, hashPassword, expireTime) => {
   }
 
   const accessToken = jwt.sign(
-    { userId: user._id },
+    { userId: user.id },
     process.env.JWT_SECRET_KEY,
     { expiresIn: expireTime }
   );

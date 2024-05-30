@@ -8,7 +8,12 @@ export const verifyToken = (req, res, next) => {
     try {
       const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
       req.accessTokenPayLoad = decoded;
-      console.log('decoded', decoded);
+
+      if (!decoded.userId) {
+        return res.status(401).json({
+          msg: "Invalid token payload.",
+        });
+      }
       next();
     } catch (err) {
       logger.err(err);
