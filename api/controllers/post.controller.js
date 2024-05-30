@@ -17,6 +17,7 @@ export const getPost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: "Post not found." });
     }
+
     res.status(200).json({ message: "Get post successfully.", data: post });
   } catch (error) {
     logger.error(error);
@@ -30,6 +31,7 @@ export const addPost = async (req, res) => {
       req.body,
       req.accessTokenPayLoad.userId
     );
+
     res.status(200).json({ message: "Create post successfully.", data: post });
   } catch (error) {
     logger.error(error);
@@ -39,6 +41,7 @@ export const addPost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   try {
+    res.json({ message: "update post" });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ message: "Failed to update post." });
@@ -46,5 +49,11 @@ export const updatePost = async (req, res) => {
 };
 
 export const deletePost = async (req, res) => {
-  res.json({ message: "delete post" });
+  try {
+    await postService.deletePost(req.params.id);
+    res.status(200).json({ message: "Delete post successfully." });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ message: "Failed to delete post." });
+  }
 };

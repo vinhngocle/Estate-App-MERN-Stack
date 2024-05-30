@@ -7,14 +7,26 @@ export const getPosts = async () => {
 export const getPostById = async (id) => {
   return await prisma.post.findUnique({
     where: { id },
+    include: {
+      postDetail: true,
+      user: {
+        select: {
+          username: true,
+          avatar: true,
+        },
+      },
+    },
   });
 };
 
 export const createPost = async (post, userId) => {
   return await prisma.post.create({
     data: {
-      ...post,
+      ...post.postData,
       userId,
+      postDetail: {
+        create: post.postDetail,
+      },
     },
   });
 };
