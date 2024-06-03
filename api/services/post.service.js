@@ -42,3 +42,7 @@ export const existsPost = async (id) => {
     where: { id },
   });
 };
+
+export const savedPost = async() => {
+  
+}

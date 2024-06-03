@@ -1,5 +1,31 @@
 import * as postService from "../services/post.service.js";
 import logger from "../utils/logger.js";
+import Joi from "joi";
+
+const schemaPostData = Joi.object({
+  title: Joi.string().required(),
+  price: Joi.number().required(),
+  images: Joi.array(),
+  address: Joi.string().required(),
+  city: Joi.string().required(),
+  bedroom: Joi.number().required(),
+  bathroom: Joi.number().required(),
+  type: Joi.string().required(),
+  property: Joi.string().required(),
+  latitude: Joi.any(),
+  longitude: Joi.any(),
+}).options({ allowUnknown: true });
+
+const schemaPostDetail = Joi.object({
+  desc: Joi.string().required(),
+  utilities: Joi.string().required(),
+  pet: Joi.string().required(),
+  income: Joi.string().required(),
+  size: Joi.number().required(),
+  school: Joi.number().required(),
+  bus: Joi.number().required(),
+  restaurant: Joi.number().required(),
+}).options({ allowUnknown: true });
 
 export const getPosts = async (req, res) => {
   try {
@@ -27,6 +53,19 @@ export const getPost = async (req, res) => {
 
 export const addPost = async (req, res) => {
   try {
+    const { error: error1 } = await schemaPostData.validate(req.body.postData);
+    const { error: error2 } = await schemaPostDetail.validate(
+      req.body.postDetail
+    );
+
+    if (error1 || error2) {
+      const errorDetails = [];
+      if (error1) errorDetails.push(error1.details);
+      if (error2) errorDetails.push(error2.details);
+
+      return res.status(400).send({ message: errorDetails.flat() });
+    }
+
     const post = await postService.createPost(
       req.body,
       req.accessTokenPayLoad.userId
@@ -55,5 +94,14 @@ export const deletePost = async (req, res) => {
   } catch (error) {
     logger.error(error);
     res.status(500).json({ message: "Failed to delete post." });
+  }
+};
+
+export const savePost = async (req, res) => {
+  try {
+    console.log("save post");
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ message: "Failed to saved post." });
   }
 };
