@@ -37,9 +37,8 @@ export const verifyEmail = async (req, res) => {
     const checkEmailToken = await authService.existEmailToken(
       req.body.emailToken
     );
-    console.log("checkEmailToken", checkEmailToken);
     if (!checkEmailToken) {
-      res
+      return res
         .status(400)
         .json({ message: "Email token not found Or verified email!" });
     }

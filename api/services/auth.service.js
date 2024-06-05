@@ -24,14 +24,14 @@ export const create = async (newUser) => {
   });
   const userWithoutPassword = exclude(user, ["password"]);
 
-  // const urlVerify = `${process.env.BASE_URL}/users/${user.id}/verify/${user.emailToken}`;
-  // const mailOptions = {
-  //   from: process.env.EMAIL_HOST,
-  //   to: newUser.email,
-  //   subject: "Estate-App",
-  //   html: `<div>For verify email your register, please clicking this link below: </div><a href=${urlVerify}>${urlVerify}</a>`,
-  // };
-  // if (user) await sendMail(mailOptions);
+  const urlVerify = `${process.env.BASE_URL}/users/${user.id}/verify/${user.emailToken}`;
+  const mailOptions = {
+    from: process.env.EMAIL_HOST,
+    to: newUser.email,
+    subject: "Estate-App",
+    html: `<div>For verify email your register, please clicking this link below: </div><a href=${urlVerify}>${urlVerify}</a>`,
+  };
+  if (user) await sendMail(mailOptions);
 
   return userWithoutPassword;
 };
@@ -60,11 +60,12 @@ export const login = async (user, hashPassword) => {
 };
 
 export const verifyEmail = async (id, emailToken) => {
-  // const expiresTime = "7d";
-  // const accessToken = jwt.sign({ userId: id }, process.env.JWT_SECRET_KEY, {
-  //   expiresIn: expiresTime,
-  // });
-  await prisma.user.updateMany({
+  const expiresTime = "7d";
+  const accessToken = jwt.sign({ userId: id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: expiresTime,
+  });
+
+  const updateUser = await prisma.user.updateMany({
     where: {
       emailToken,
     },
@@ -74,18 +75,7 @@ export const verifyEmail = async (id, emailToken) => {
     },
   });
 
-  const updateUser = await prisma.user.findUnique({
-    where: {
-      emailToken,
-    },
-    select: {
-      username: true,
-      email: true,
-      isVerified: true,
-    },
-  });
-
-  return { ...updateUser };
+  return { ...updateUser, accessToken };
 };
 
 export const existUser = async (email) => {
