@@ -6,6 +6,10 @@ logs
 log
 *.log
 
+# uploads
+uploads
+upload
+
 # Misc
 .DS_Store
 .fleet

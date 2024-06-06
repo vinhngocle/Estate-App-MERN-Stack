@@ -105,3 +105,14 @@ export const savePost = async (req, res) => {
     res.status(500).json({ message: "Failed to saved post." });
   }
 };
+
+export const uploadFile = async (req, res) => {
+  try {
+    res
+      .status(200)
+      .json({ message: "upload files succesfully.", data: req.files });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ message: "Failed to saved post." });
+  }
+};
