@@ -59,23 +59,19 @@ export const login = async (user, hashPassword) => {
   return accessToken;
 };
 
-export const verifyEmail = async (id, emailToken) => {
-  const expiresTime = "7d";
-  const accessToken = jwt.sign({ userId: id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: expiresTime,
-  });
+export const verifyEmail = async (emailToken) => {
+  const user = await existEmailToken(emailToken);
 
-  const updateUser = await prisma.user.updateMany({
-    where: {
-      emailToken,
-    },
+  const userUpdate = await prisma.user.update({
+    where: { id: user.id },
     data: {
       emailToken: null,
       isVerified: true,
     },
   });
+  const userWithoutPassword = exclude(userUpdate, ["password"]);
 
-  return { ...updateUser, accessToken };
+  return userWithoutPassword;
 };
 
 export const existUser = async (email) => {
@@ -83,7 +79,7 @@ export const existUser = async (email) => {
 };
 
 export const existEmailToken = async (emailToken) => {
-  return await prisma.user.findUnique({
+  return await prisma.user.findFirst({
     where: { emailToken },
   });
 };

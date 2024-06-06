@@ -40,13 +40,14 @@ export const verifyEmail = async (req, res) => {
     if (!checkEmailToken) {
       return res
         .status(400)
-        .json({ message: "Email token not found Or verified email!" });
+        .json({ message: "Email verification faild, invalid token!" });
     }
 
     const verify = await authService.verifyEmail(req.body.emailToken);
-    res
-      .status(200)
-      .json({ message: "Verify email succesfully.", data: verify });
+    res.status(200).json({
+      message: "Verify email succesfully.",
+      data: verify,
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).json({ message: "Error verify email user!" });
@@ -55,14 +56,13 @@ export const verifyEmail = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { error } = await schema.validate(req.body);
-    if (error) {
-      return res.json({ message: error.details });
+    const existUser = await authService.existUser(req.body.email);
+    if (!existUser.isVerified) {
+      return res.status(401).json({ message: "Please verify email." });
     }
 
-    const existUser = await authService.existUser(req.body.username);
     if (!existUser) {
-      return res.json("User not found.");
+      return res.status(400).json({ message: "User not found." });
     }
     const { password: userPassword, ...userInfo } = existUser;
 

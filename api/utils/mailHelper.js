@@ -11,15 +11,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// const mailOptions = {
-//   from: process.env.EMAIL_HOST,
-//   to,
-//   subject,
-//   text: textBody || null,
-//   html: htmlBody || null,
-//   attachments: attachments || [],
-// };
-
 export const sendMail = async (mailOptions) => {
   try {
     await transporter.sendMail(mailOptions, (error, info) => {

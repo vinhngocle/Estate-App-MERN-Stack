@@ -1,6 +1,9 @@
 # config env
 DATABASE_URL
 JWT_SECRET_KEY
+EMAIL_HOST
+PASSWORD_EMAIL_HOST
+BASE_URL
 
 # random key for jwt_serect_key
 openssl rand -base64 32
