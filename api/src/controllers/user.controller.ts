@@ -1,28 +1,16 @@
-import { Router, Request, Response } from "express";
-import { UserModel } from "../models/user.model";
-import { UserQueryParams } from "../types/query-params";
-import { User } from "../types/response";
+import { Router, Request, Response, NextFunction } from "express";
+import auth from "../middleware/auth.middleware";
+import { getCurrentUser } from "../services/user.service";
 
 const router = Router();
 
-export function getUsers(req: Request, res: Response) {
-  res.send([]);
-}
-
-export function getUserById(req: Request, res: Response) {
-  res.send("get user by id");
-}
-
-export function CreatUser(
-  req: Request<{}, {}, UserModel, UserQueryParams>,
-  res: Response<User>
-) {
-  req.session;
-  return res.status(201).send({
-    id: 1,
-    username: "vinh",
-    email: "vinh@gmail.com",
-  });
-}
+router.get('/user/', auth.require, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await getCurrentUser(req.user?.username as string);
+    res.status(200).json({ message: "Get user successfully.", data: user })
+  } catch (error) {
+    next(error)
+  }
+})
 
 export default router;

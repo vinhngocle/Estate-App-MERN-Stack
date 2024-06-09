@@ -1,6 +1,10 @@
 export interface UserModel {
+  id: number;
   username: String;
-  email: String;
-  password: String;
-  avatar?: String;
+  email: string;
+  password: string;
+  avatar: string | null;
+  last_name: string | null;
+  first_name: string | null;
+  emailToken: string | null;
 }
