@@ -20,7 +20,7 @@ export const getCurrentUser = async (email: string | undefined) => {
   return { ...user }
 }
 
-export const getUserIdByUserName = async (email: string) => {
+export const getUserIdByEmail = async (email: string) => {
   const user = await prisma.user.findUnique({
     where: { email },
     select: {
