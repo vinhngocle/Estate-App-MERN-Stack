@@ -4,9 +4,9 @@ import { getCurrentUser } from "../services/user.service";
 
 const router = Router();
 
-router.get('/user/', auth.require, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/user/me', auth.require, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await getCurrentUser(req.user?.username as string);
+    const user = await getCurrentUser(req.user?.email);
     res.status(200).json({ message: "Get user successfully.", data: user })
   } catch (error) {
     next(error)

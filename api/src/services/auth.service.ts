@@ -1,6 +1,7 @@
 import { AuthModel } from "../models/auth.model";
 import prisma from '../prisma/prisma-client';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto'
 import generateToken from "../utils/token.utils";
 
 export const createUser = async (input: AuthModel) => {
@@ -13,11 +14,14 @@ export const createUser = async (input: AuthModel) => {
     data: {
       email,
       username,
-      password: hashPassword
+      password: hashPassword,
+      emailToken: crypto.randomBytes(64).toString('hex')
     },
     select: {
       email: true,
-      username: true
+      username: true,
+      emailToken: true,
+      isVerified: true
     }
   })
   return user;
@@ -29,7 +33,7 @@ export const login = async (input: any) => {
 
   const user = await prisma.user.findUnique({
     where: {
-      email
+      email,
     },
     select: {
       email: true,
@@ -50,4 +54,26 @@ export const login = async (input: any) => {
   }
 
   return user;
+}
+
+export const verifyEmail = async (input: any) => {
+  const emailToken = input.emailToken.trim()
+  const updatedUser = await prisma.user.updateMany({
+    where: { emailToken },
+    data: {
+      isVerified: true,
+      emailToken: null
+    }
+  })
+
+  return updatedUser;
+}
+
+export const checkEmailVerified = async (input: any) => {
+  const email = input.email.trim()
+  return await prisma.user.findUnique({
+    where: {
+      email
+    }
+  })
 }
