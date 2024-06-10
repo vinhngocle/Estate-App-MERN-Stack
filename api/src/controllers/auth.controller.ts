@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { createUser, login, verifyEmail, checkEmailVerified } from "../services/auth.service"
+import HttpException from "../utils/http-exception";
 
 const router = Router();
 
@@ -16,7 +17,7 @@ router.post("/auth/login", async (req: Request, res: Response, next: NextFunctio
   try {
     const userVerify = await checkEmailVerified(req.body)
     if (userVerify?.isVerified === false) {
-      return res.status(401).json({ message: "User email is not verify." })
+      throw new HttpException(401, { error: "User email is not verify.!!" })
     }
 
     const user = await login(req.body)
@@ -30,7 +31,7 @@ router.post("/auth/verify-email", async (req: Request, res: Response, next: Next
   try {
     const verify = await verifyEmail(req.body)
     if (verify.count === 0) {
-      return res.status(400).json({ message: "Invalid email token." })
+      throw new HttpException(401, { error: "Invalid email token.!!" })
     }
 
     res.status(200).json({ message: "Verify email user successfully.", data: verify })

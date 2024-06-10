@@ -13,16 +13,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id         Int      @id @default(autoincrement())
-  username   String   @unique
-  email      String   @unique
+model User {
+  id         Int       @id @default(autoincrement())
+  username   String    @unique
+  email      String    @unique
   password   String
   avatar     String?
   first_name String?
   last_name  String?
-  emailToken String?  @unique
-  isVerified Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  emailToken String?   @unique
+  isVerified Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  articles   Article[] @relation("UserArticles")
+  favorites  Article[] @relation("UserFavorites")
+  followedBy User[]    @relation("UserFollows")
+  following  User[]    @relation("UserFollows")
+  Comment    Comment[]
+}
+
+model Article {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  title       String
+  description String
+  body        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  tagList     Tag[]
+  author      User      @relation("UserArticles", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    Int
+  favoritedBy User[]    @relation("UserFavorites")
+  comments    Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  body      String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  articles Article[]
 }

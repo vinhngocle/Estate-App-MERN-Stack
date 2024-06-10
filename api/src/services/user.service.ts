@@ -19,3 +19,23 @@ export const getCurrentUser = async (email: string | undefined) => {
 
   return { ...user }
 }
+
+export const getUserIdByUserName = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      first_name: true,
+      last_name: true,
+      avatar: true
+    }
+  })
+
+  if (!user) {
+    throw new HttpException(404, { message: "User id not found!!" })
+  }
+
+  return user;
+}
