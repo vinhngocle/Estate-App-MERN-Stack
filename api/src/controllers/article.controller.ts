@@ -75,6 +75,13 @@ router.delete("/article/:slug/comments/:id", auth.require, async (req: Request, 
   }
 })
 
+/**
+* save favorite
+* @auth optional
+* @router {POST} /article/:slug/favorite
+* @param
+* @returns favorite
+*/
 router.post("/article/:slug/favorite", auth.require, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const favorite = await favArticle(req.params.slug, req.user?.email as string)
@@ -84,6 +91,13 @@ router.post("/article/:slug/favorite", auth.require, async (req: Request, res: R
   }
 })
 
+/**
+* remove favorite
+* @auth optional
+* @router {DELETE} /article/:slug/un-favorite
+* @param
+* @returns favorite
+*/
 router.delete("/article/:slug/un-favorite", auth.require, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const favorite = await unFavArticle(req.params.slug, req.user?.email as string)
