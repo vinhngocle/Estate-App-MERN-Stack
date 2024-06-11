@@ -1,0 +1,23 @@
+# config env
+PORT
+DATABASE_URL
+JWT_SECRET_KEY
+EMAIL_HOST
+PASSWORD_EMAIL_HOST
+BASE_URL
+
+# random key for jwt_serect_key
+openssl rand -base64 32
+
+# init prisma.schema (before run need install prisma)
+prisma init
+
+# migrate db
+yarn run prisma:migrate
+
+# generate db
+yarn run prisma:generate
+
+# run project
+- yarn install
+- yarn run start:dev
