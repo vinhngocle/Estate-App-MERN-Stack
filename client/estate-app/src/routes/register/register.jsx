@@ -1,13 +1,19 @@
 import "./register.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import apiRequest from "../../lib/apiRequest";
+import Alert from "../../components/alert/Alert";
 
 const Register = () => {
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
     const formData = new FormData(e.target);
 
     const username = formData.get("username");
@@ -15,18 +21,21 @@ const Register = () => {
     const password = formData.get("password");
 
     try {
-      const res = await axios.post("http://localhost:8800/api/auth/register", {
+      const res = await apiRequest.post("/auth/register", {
         username,
         email,
         password,
       });
 
-      console.log(res.data);
+      if (res.data) {
+        setMessage(res.message);
+        navigate("/login");
+      }
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
-
-    console.log(username, email, password);
   };
 
   return (
@@ -55,9 +64,10 @@ const Register = () => {
             title="password"
             required
           />
-          <button>Register</button>
-          {error && <span>{error}</span>}
+          <button disabled={isLoading}>Register</button>
           <Link to="/login">Do you have an account?</Link>
+          {message && <Alert type="success" message={message} />}
+          {error && <Alert type="error" message={error} />}
         </form>
       </div>
       <div className="imgContainer">
