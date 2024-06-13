@@ -1,5 +1,5 @@
 import "./alert.scss";
-import style from "../style.module.scss";
+import style from "../../assets/style.module.scss";
 import css from "classnames";
 import { ReactElement, cloneElement, useState } from "react";
 

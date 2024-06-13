@@ -1,13 +1,17 @@
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import apiRequest from "../../lib/apiRequest";
 import Alert from "../../components/alert/Alert";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const { updateUser } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,7 +29,8 @@ const Login = () => {
         password,
       });
 
-      localStorage.setItem("user", JSON.stringify(res.data));
+      // localStorage.setItem("user", JSON.stringify(res.data.data));
+      updateUser(res.data.data);
       if (res.data) {
         setMessage(res.message);
         navigate("/");

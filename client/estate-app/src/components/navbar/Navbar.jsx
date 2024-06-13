@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <nav>
       <div className="left">
-        <a href="" className="logo">
+        <a href="/" className="logo">
           <img src="/logo.png" />
           <span>LamaEstate</span>
         </a>
@@ -24,7 +24,7 @@ const Navbar = () => {
           <div className="user">
             <img src={userData.img} alt="" />
             <span>{userData.name}</span>
-            <Link to="profile" className="profile">
+            <Link to="/profile" className="profile">
               <div className="notification">3</div>
               <span>Profile</span>
             </Link>
