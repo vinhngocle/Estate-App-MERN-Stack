@@ -4,6 +4,7 @@ import { getCurrentUser } from "../services/user.service";
 import multer from "multer";
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import logger from "../utils/logger";
 
 const uploadDir = join(__dirname, '../uploads');
 if (!existsSync(uploadDir)) {
@@ -28,6 +29,7 @@ router.get('/user/me', auth.require, async (req: Request, res: Response, next: N
     const user = await getCurrentUser(req.user?.email);
     res.status(200).json({ message: "Get user successfully.", data: user })
   } catch (error) {
+    logger.error(error)
     next(error)
   }
 })
@@ -39,6 +41,7 @@ router.post("/user/upload",
     try {
       res.status(200).json({ message: "Upload Avatar successfully.", data: req.file })
     } catch (error) {
+      logger.error(error)
       next(error)
     }
   })

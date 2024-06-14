@@ -3,6 +3,7 @@ import prisma from '../prisma/prisma-client';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto'
 import generateToken from "../utils/token.utils";
+import { sendMail } from '../utils/mailHelper'
 
 export const createUser = async (input: AuthModel) => {
   const email = input.email.trim()
@@ -24,6 +25,16 @@ export const createUser = async (input: AuthModel) => {
       isVerified: true
     }
   })
+
+  const urlVerify = `${process.env.BASE_URL}/user/verify/${user.emailToken}`;
+  const mailOptions = {
+    from: process.env.EMAIL_HOST,
+    to: user.email,
+    subject: "Estate-App",
+    html: `<div>For verify email your register, please clicking this link below: </div><a href=${urlVerify}>${urlVerify}</a>`,
+  };
+  if (user) await sendMail(mailOptions);
+
   return user;
 }
 

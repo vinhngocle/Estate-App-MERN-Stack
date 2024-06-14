@@ -12,6 +12,7 @@ import { createPostSchema } from "../utils/validation/postSchema";
 import multer from "multer";
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import logger from "../utils/logger";
 
 const uploadDir = join(__dirname, '../uploads');
 if (!existsSync(uploadDir)) {
@@ -41,6 +42,7 @@ router.get("/post/", async (req: Request, res: Response, next: NextFunction) => 
     const posts = await getAllPost()
     res.status(200).json({ message: "Get posts successfully.", data: posts })
   } catch (error) {
+    logger.error(error)
     next(error)
   }
 })
@@ -50,6 +52,7 @@ router.get("/post/:id", async (req: Request, res: Response, next: NextFunction) 
     const post = await getPostById(Number(req.params.id));
     res.status(200).json({ message: "Get post successfully.", data: post })
   } catch (error) {
+    logger.error(error)
     next(error)
   }
 })
@@ -64,6 +67,7 @@ router.post("/post/", checkSchema(createPostSchema), auth.require, async (req: R
     const post = await createPost(req.body.postData, req.body.postDetail, req.user?.email as string);
     res.status(201).json({ message: "Create post successfully.", data: post })
   } catch (error) {
+    logger.error(error)
     next(error)
   }
 })
@@ -73,6 +77,7 @@ router.put("/post/:id", checkSchema(createPostSchema), auth.require, async (req:
     const post = await updatePost(req.body.postData, req.body.postDetail, Number(req.params.id), req.user?.email as string)
     res.status(201).json({ message: "Update post successfully.", data: post })
   } catch (error) {
+    logger.error(error)
     next(error)
   }
 })
@@ -82,6 +87,7 @@ router.delete("/post/:id", auth.require, async (req: Request, res: Response, nex
     const post = await deletePost(Number(req.params.id));
     res.status(200).json({ message: "Delete post successfully.", data: post })
   } catch (error) {
+    logger.error(error)
     next(error)
   }
 })
@@ -90,6 +96,7 @@ router.post("/post/uploads", uploads, auth.require, async (req: Request, res: Re
   try {
     res.status(200).json({ message: "Upload images successfully.", data: req.files })
   } catch (error) {
+    logger.error(error)
     next(error)
   }
 })
