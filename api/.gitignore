@@ -14,3 +14,7 @@ logs
 .env
 .env.*
 !.env.example
+
+# uploads
+uploads
+upload

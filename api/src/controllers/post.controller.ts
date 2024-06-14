@@ -9,6 +9,30 @@ import {
 import auth from "../middleware/auth.middleware";
 import { checkSchema, validationResult } from 'express-validator'
 import { createPostSchema } from "../utils/validation/postSchema";
+import multer from "multer";
+import { existsSync, mkdirSync } from 'fs';
+import { join } from 'path';
+
+const uploadDir = join(__dirname, '../uploads');
+if (!existsSync(uploadDir)) {
+  mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, uploadDir);
+  },
+  filename: (req, file, callback) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    callback(null, file.fieldname + "-" + uniqueSuffix);
+  },
+});
+const uploads = multer({ storage: storage }).fields([
+  {
+    name: "photos",
+    maxCount: 2
+  },
+]);;
 
 const router = Router();
 
@@ -57,6 +81,14 @@ router.delete("/post/:id", auth.require, async (req: Request, res: Response, nex
   try {
     const post = await deletePost(Number(req.params.id));
     res.status(200).json({ message: "Delete post successfully.", data: post })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post("/post/uploads", uploads, auth.require, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res.status(200).json({ message: "Upload images successfully.", data: req.files })
   } catch (error) {
     next(error)
   }
