@@ -10,7 +10,8 @@ import swaggerDocs from "../docs/swagger.json";
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+app.use(cors({ origin: "http://localhost:4000/", credentials: false }));
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.static("public"));

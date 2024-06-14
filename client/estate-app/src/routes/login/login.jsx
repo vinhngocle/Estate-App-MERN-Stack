@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import apiRequest from "../../lib/apiRequest";
 import Alert from "../../components/alert/Alert";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +33,10 @@ const Login = () => {
       // localStorage.setItem("user", JSON.stringify(res.data.data));
       updateUser(res.data.data);
       if (res.data) {
+        apiRequest.defaults.headers.post["Content-Type"] = "application/json";
+        apiRequest.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${res.data.data.token}`;
         setMessage(res.message);
         navigate("/");
       }

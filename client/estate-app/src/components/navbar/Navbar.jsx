@@ -31,8 +31,8 @@ const Navbar = () => {
           </div>
         ) : (
           <>
-            <a href="/sign-in">Sign in</a>
-            <a href="/sign-up" className="register">
+            <a href="/login">Sign in</a>
+            <a href="/register" className="register">
               Sign up
             </a>
           </>
