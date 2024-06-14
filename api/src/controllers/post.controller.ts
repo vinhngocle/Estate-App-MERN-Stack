@@ -7,6 +7,8 @@ import {
   deletePost
 } from "../services/post.service"
 import auth from "../middleware/auth.middleware";
+import { checkSchema, validationResult } from 'express-validator'
+import { createPostSchema } from "../utils/validation/postSchema";
 
 const router = Router();
 
@@ -28,8 +30,13 @@ router.get("/post/:id", async (req: Request, res: Response, next: NextFunction) 
   }
 })
 
-router.post("/post/", auth.require, async (req: Request, res: Response, next: NextFunction) => {
+router.post("/post/", checkSchema(createPostSchema), auth.require, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      return res.status(400).json({ error: result.array() });
+    }
+
     const post = await createPost(req.body.postData, req.body.postDetail, req.user?.email as string);
     res.status(201).json({ message: "Create post successfully.", data: post })
   } catch (error) {
@@ -37,7 +44,7 @@ router.post("/post/", auth.require, async (req: Request, res: Response, next: Ne
   }
 })
 
-router.put("/post/:id", auth.require, async (req: Request, res: Response, next: NextFunction) => {
+router.put("/post/:id", checkSchema(createPostSchema), auth.require, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const post = await updatePost(req.body.postData, req.body.postDetail, Number(req.params.id), req.user?.email as string)
     res.status(201).json({ message: "Update post successfully.", data: post })

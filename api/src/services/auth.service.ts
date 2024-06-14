@@ -69,7 +69,7 @@ export const verifyEmail = async (input: any) => {
   return updatedUser;
 }
 
-export const checkEmailVerified = async (input: any) => {
+export const existUser = async (input: any) => {
   const email = input.email.trim()
   return await prisma.user.findUnique({
     where: {
