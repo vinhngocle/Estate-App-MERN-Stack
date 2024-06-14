@@ -30,18 +30,19 @@ const Login = () => {
         password,
       });
 
-      // localStorage.setItem("user", JSON.stringify(res.data.data));
       updateUser(res.data.data);
       if (res.data) {
-        apiRequest.defaults.headers.post["Content-Type"] = "application/json";
-        apiRequest.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${res.data.data.token}`;
+        apiRequest.post("/login", {
+          headers: {
+            Authorization:
+              "Bearer " + JSON.parse(localStorage.getItem("user")).token,
+          },
+        });
         setMessage(res.message);
         navigate("/");
       }
     } catch (error) {
-      setError(error.response.data.error);
+      // setError(error);
     } finally {
       setIsLoading(false);
     }
