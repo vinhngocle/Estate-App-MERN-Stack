@@ -3,6 +3,6 @@ export interface AuthModel {
   username: string;
   email: string;
   password: string;
-  emailToken: string;
-  isVerified: boolean;
+  // emailToken: string;
+  // isVerified: boolean;
 }

@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto'
 import generateToken from "../utils/token.utils";
 import { sendMail } from '../utils/mailHelper'
+import HttpException from "../utils/http-exception";
 
 export const createUser = async (input: AuthModel) => {
   const email = input.email.trim()
@@ -64,11 +65,11 @@ export const login = async (input: any) => {
     }
   }
 
-  return user;
+  return null;
 }
 
 export const verifyEmail = async (input: any) => {
-  const emailToken = input.emailToken.trim()
+  const emailToken = input.emailToken?.trim()
   const updatedUser = await prisma.user.updateMany({
     where: { emailToken },
     data: {
@@ -76,6 +77,10 @@ export const verifyEmail = async (input: any) => {
       emailToken: null
     }
   })
+
+  if (updatedUser?.count === 0) {
+    throw new HttpException(400, { error: "User update not found." });
+  }
 
   return updatedUser;
 }
