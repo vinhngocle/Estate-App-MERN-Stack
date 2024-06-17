@@ -73,8 +73,31 @@ export const createPost = async (postData: PostDataModel, postDetail: PostDetail
   return newPost;
 }
 
-export const getAllPost = async () => {
-  const posts = prisma.post.findMany()
+export const getMeta = async (page: number, size: number) => {
+  const totalPage = prisma.post.aggregate({
+    _count: {
+      _all: true,
+    },
+  })
+
+  const meta = {
+    currentPage: page,
+    perPage: size,
+    total: (await totalPage)._count._all
+  }
+
+  return meta;
+}
+
+export const getAllPost = async (page: number, size: number) => {
+  const posts = prisma.post.findMany({
+    skip: (page - 1) * size,
+    take: size,
+    orderBy: {
+      id: 'asc',
+    },
+  })
+
   return posts;
 }
 

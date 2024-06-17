@@ -4,7 +4,8 @@ import {
   getAllPost,
   getPostById,
   updatePost,
-  deletePost
+  deletePost,
+  getMeta
 } from "../services/post.service"
 import auth from "../middleware/auth.middleware";
 import { checkSchema, validationResult } from 'express-validator'
@@ -39,8 +40,11 @@ const router = Router();
 
 router.get("/post/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const posts = await getAllPost()
-    res.status(200).json({ message: "Get posts successfully.", data: posts })
+    let { page, size } = req.query;
+
+    const posts = await getAllPost(Number(page), Number(size))
+    const meta = await getMeta(Number(page), Number(size))
+    res.status(200).json({ message: "Get posts successfully.", data: posts, meta })
   } catch (error) {
     logger.error(error)
     next(error)
