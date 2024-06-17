@@ -90,15 +90,17 @@ export const getMeta = async (page: number, size: number) => {
 }
 
 export const getAllPost = async (page: number, size: number) => {
-  const posts = prisma.post.findMany({
-    skip: (page - 1) * size,
-    take: size,
-    orderBy: {
-      id: 'asc',
-    },
-  })
+  if (page > 0) {
+    return prisma.post.findMany({
+      skip: (page - 1) * size,
+      take: size,
+      orderBy: {
+        id: 'asc',
+      },
+    })
+  }
 
-  return posts;
+  return prisma.post.findMany()
 }
 
 export const getPostById = async (id: number) => {

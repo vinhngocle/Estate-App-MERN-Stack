@@ -44,7 +44,8 @@ router.get("/post/", async (req: Request, res: Response, next: NextFunction) => 
 
     const posts = await getAllPost(Number(page), Number(size))
     const meta = await getMeta(Number(page), Number(size))
-    res.status(200).json({ message: "Get posts successfully.", data: posts, meta })
+    const showMeta = Number(page) > 0 ? meta : {}
+    res.status(200).json({ message: "Get posts successfully.", data: posts, meta: showMeta })
   } catch (error) {
     logger.error(error)
     next(error)
