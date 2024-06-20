@@ -1,14 +1,26 @@
 version: '3.8'
 services:
-  postgres:
-    image: postgres:10.3
+  db:
+    image: postgres:16
     restart: always
     environment:
-      - POSTGRES_USER=sammy
-      - POSTGRES_PASSWORD=your_password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: estate
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgresdb-data:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - "5432:5432"
+
+  web:
+    # image: estate-app-demo:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+
 volumes:
-  postgres:
+  postgresdb-data:

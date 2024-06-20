@@ -18,6 +18,12 @@ app.use(routes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+
+app.get("/test-api", (req, res) => {
+  res.send({ data: ["John", "Tommy", "Linda"] });
+});
+
+
 app.use(
   (
     err: Error | HttpException,
