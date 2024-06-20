@@ -13,14 +13,20 @@ services:
       - "5432:5432"
 
   web:
-    # image: estate-app-demo:latest
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    image: estate-app-demo:latest
+    # build:
+    #   context: .
+    #   dockerfile: ./Dockerfile
     ports:
       - "4000:4000"
     depends_on:
       - db
-
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: estate
+    
 volumes:
   postgresdb-data:
