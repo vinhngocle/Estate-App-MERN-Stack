@@ -20,7 +20,7 @@ app.get("/test-api", (req, res) => {
 
 dotenv.config();
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(cookieParser());
