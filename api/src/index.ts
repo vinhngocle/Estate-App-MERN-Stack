@@ -14,8 +14,8 @@ import { connectDB } from "./utils/server-connetion";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.get("/test-api", (req, res) => {
-  res.send(["John", "Tommy", "Linda"]);
+app.get("/hello", (req, res) => {
+  res.send(["John", "Tommy", "Linda", "vinh"]);
 });
 
 dotenv.config();

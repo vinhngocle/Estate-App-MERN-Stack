@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  mongodb:
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongodb-data:/data/db
+
+  web:
+    image: estate-app:latest
+    # build:
+    #   context: .
+    #   dockerfile: ./Dockerfile
+    ports:
+      - "5001:5000"
+    depends_on:
+      - mongodb
+    environment:
+      PORT: ${PORT}
+      MONGO_URI: ${MONGO_URL}
+      # MONGO_URI: mongodb://mongodb:27017"
+      DB_NAME: my_db
+      NAME: TrulyMittal
+    
+volumes:
+  mongodb-data:
