@@ -5,15 +5,16 @@ import IVerification from "../model/verification.model";
 const verificationSchema = new Schema<IVerification>(
   {
     user_id: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
-    code: {
-      type: String,
-      require: true,
-    },
+    // code: {
+    //   type: String,
+    //   require: true,
+    // },
     verify_token: {
       type: String,
+      default: null,
     },
     verified: {
       type: Boolean,

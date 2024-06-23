@@ -15,24 +15,27 @@ const userSchema = new Schema<IUser>(
     },
     first_name: {
       type: String,
+      default: null,
     },
     last_name: {
       type: String,
+      default: null,
     },
     refresh_token: {
       type: String,
+      default: null,
     },
     // email_veried: {
     //   type: Boolean,
     //   default: false,
     // },
     role_id: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Role",
     },
     deleted_at: {
       type: Date,
-      default: Date.now,
+      default: null,
     },
   },
   {
