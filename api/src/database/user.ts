@@ -25,10 +25,14 @@ const userSchema = new Schema<IUser>(
       type: String,
       default: null,
     },
-    // email_veried: {
-    //   type: Boolean,
-    //   default: false,
-    // },
+    verify_token: {
+      type: String,
+      default: null,
+    },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     role_id: {
       type: Schema.Types.ObjectId,
       ref: "Role",

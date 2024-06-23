@@ -6,7 +6,8 @@ export default interface IUser {
   first_name?: string;
   last_name?: string;
   refresh_token?: string;
-  // email_veried: boolean;
+  verify_token: string;
+  verified?: boolean;
   role_id: Schema.Types.ObjectId;
   deleted_at?: Date;
 }

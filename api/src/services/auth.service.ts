@@ -1,12 +1,13 @@
 import IUser from "../model/user.model";
 import userModel from "../database/user";
 import roleModel from "../database/role";
-import verificationModel from "../database/verification";
+// import verificationModel from "../database/verification";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import generateToken from "../utils/token.utils";
 
 export const regiserUser = async (user: IUser) => {
-  let { email, password, first_name, last_name } = user;
+  let { email, password, first_name, last_name, verify_token } = user;
   email = email.trim();
   password = password.trim();
   first_name = first_name?.trim();
@@ -21,30 +22,21 @@ export const regiserUser = async (user: IUser) => {
     first_name,
     last_name,
     role_id: roleStudent?._id,
+    verify_token: crypto.randomBytes(64).toString("hex"),
   });
   await newUser.save();
 
-  const verify = new verificationModel({
-    user_id: newUser._id,
-    verify_token: crypto.randomBytes(64).toString("hex"),
-  });
-  await verify.save();
-
   const { password: _, ...userWithoutPassword } = newUser.toObject();
 
-  return {
-    email: userWithoutPassword.email,
-    verify_token: verify.verify_token,
-  };
+  return userWithoutPassword;
 };
 
-export const verifyEmail = async (email: any, emailToken: any) => {
-  const user = await userModel.findOne({ email }).exec();
-  const verify = await verificationModel
+export const verifyEmail = async (email: any, verifyToken: any) => {
+  const verify = await userModel
     .findOneAndUpdate(
       {
-        user_id: user?._id.toString(),
-        verify_token: emailToken,
+        email,
+        verify_token: verifyToken,
       },
       {
         verify_token: null,
@@ -54,7 +46,33 @@ export const verifyEmail = async (email: any, emailToken: any) => {
         new: true,
       }
     )
+    .select(["email", "verify_token", "verified"])
     .exec();
 
+  console.log("verify", verify);
+
   return verify;
+};
+
+export const loginUser = async (email: any, password: any) => {
+  const user = await userModel.findOne({ email }).exec();
+
+  if (user && user.verified === true) {
+    const match = await bcrypt.compare(password, user.password);
+    if (match) {
+      const payload = {
+        id: user._id.toString(),
+      };
+      
+      return {
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        verified: user.verified,
+        token: generateToken(payload),
+      };
+    }
+  }
+
+  return null;
 };

@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { regiserUser, verifyEmail } from "../services/auth.service";
+import { regiserUser, verifyEmail, loginUser } from "../services/auth.service";
 import logger from "../utils/logger";
 
 const router = Router();
@@ -31,6 +31,25 @@ router.put(
       res
         .status(200)
         .json({ message: "Verify user email successfull.", data: verfify });
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ error: "Verify user email failed." });
+    }
+  }
+);
+
+router.post(
+  "/auth/login",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, password } = req.body;
+      const login = await loginUser(email, password);
+
+      if (!login) {
+        return res.status(400).json({ error: "Email not found." });
+      }
+
+      res.status(200).json({ message: "Login successfull.", data: login });
     } catch (error) {
       logger.error(error);
       res.status(500).json({ error: "Verify user email failed." });
