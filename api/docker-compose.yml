@@ -1,5 +1,9 @@
 version: '3.8'
 services:
+
+  ############################
+  # MONGODB
+  ############################
   mongodb:
     container_name: db_container
     image: mongo:latest
@@ -8,12 +12,12 @@ services:
       - mongodb-data:/data/db
 
   web:
-    image: estate-app:latest
-    # build:
-    #   context: .
-    #   dockerfile: ./Dockerfile
+    # image: estate-app:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     ports:
-      - "5001:5000"
+      - "5000:5000"
     depends_on:
       - mongodb
     environment:
