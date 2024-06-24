@@ -14,9 +14,9 @@ RUN yarn install --frozen-lockfile
 # COPY ./prisma ./prisma/
 COPY ../src/prisma ./src/prisma/
 RUN yarn global add prisma
-RUN yarn global add @prisma/client
-RUN yarn run prisma:generate
+# RUN yarn global add @prisma/client
 # RUN yarn run prisma:migrate
+RUN yarn run prisma:generate
 # RUN ls -la /app/node_modules/.prisma/client
 # RUN prisma generate --schema=./src/prisma/schema.prisma
 
