@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  postgresdb:
+    container_name: ${APP_NAME}-app
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgresdb-data:/var/lib/postgresql/data
+    ports:
+      # - ${DB_PORT}:${DB_PORT}
+      - "5432:5432"
+
+  web:
+    # image: estate-app-demo:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      # - ${HTTP_PORT:-80}:80
+      - "4000:4000"
+    depends_on:
+      - postgresdb
+    environment:
+      DATABASE_HOST: postgresdb
+      DATABASE_PORT: ${DB_PORT}
+      DATABASE_USER: ${DB_USER}
+      DATABASE_PASSWORD: ${DB_PASSWORD}
+      DATABASE_NAME: ${DB_NAME}
+    
+volumes:
+  postgresdb-data:
