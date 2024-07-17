@@ -1,13 +1,24 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
-function TodoCard(props) {
-  const { children, handleDeleteTodo, handleUpdateTodo, index } = props;
+interface TodoCardProps {
+  children: ReactElement;
+  handleDeleteTodo: (index: number) => void;
+  handleUpdateTodo: (index: number) => void;
+  index: number;
+}
 
+function TodoCard({
+  children,
+  handleDeleteTodo,
+  handleUpdateTodo,
+  index,
+}: TodoCardProps) {
   return (
-    <li className="todoItem w-50 d-flex flex-row justify-content-between">
+    <li className="todoItem text-center d-flex justify-content-between w-50">
       <span>{children}</span>
       <div className="actionsContainer">
         <button
+          className="mx-2"
           onClick={() => {
             handleUpdateTodo(index);
           }}
