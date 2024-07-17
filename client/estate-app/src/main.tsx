@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TodoListPage from "./pages/TodoListPage.tsx";
+import NasaAppPage from "./pages/GymAppPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "/todo-list",
     element: <TodoListPage />,
+  },
+  {
+    path: "/gym-app",
+    element: <NasaAppPage />,
   },
 ]);
 
