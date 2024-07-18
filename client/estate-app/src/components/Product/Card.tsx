@@ -1,8 +1,9 @@
 import React from "react";
 
 interface Product {
-  image: string;
+  id: number;
   title: string;
+  image: string;
   description: string;
   category: string;
   price: number;
@@ -11,9 +12,10 @@ interface Product {
 
 interface CardProps {
   product: Product;
+  addToCart: (Product: Product) => void;
 }
 
-function Card({ product }: CardProps) {
+function Card({ product, addToCart }: CardProps) {
   return (
     <div className="py-2 px-2">
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -36,8 +38,8 @@ function Card({ product }: CardProps) {
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 line-clamp-4">
             {product.description}
           </p>
-          <a
-            href="#"
+          <button
+            onClick={() => addToCart(product)}
             className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Add to Card
@@ -56,7 +58,7 @@ function Card({ product }: CardProps) {
                 d="M1 5h12m0 0L9 1m4 4L9 9"
               />
             </svg>
-          </a>
+          </button>
         </div>
       </div>
     </div>

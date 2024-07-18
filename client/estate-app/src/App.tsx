@@ -1,6 +1,4 @@
-import { BrowserRouter, Link, Route } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar";
-import ProductPage from "./pages/ProductPage";
+import { Link } from "react-router-dom";
 
 function App() {
   return (

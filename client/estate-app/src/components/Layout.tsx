@@ -1,16 +1,18 @@
-import { ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
+import { Provider } from "react-redux";
+import store from "../store/store";
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-function Layout({ children }: LayoutProps) {
+function Layout() {
   return (
-    <div>
-      <Navbar />
-      <main>{children}</main>
-    </div>
+    <>
+      <Provider store={store}>
+        <Navbar />
+        <main>
+          <Outlet />
+        </main>
+      </Provider>
+    </>
   );
 }
 
