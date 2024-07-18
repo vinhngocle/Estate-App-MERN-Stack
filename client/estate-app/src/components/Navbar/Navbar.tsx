@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 function Navbar() {
+  const cartProducts = useSelector((state: RootState) => state.cart.carts);
+
   return (
     <>
       <nav className="bg-gray-800">
@@ -133,7 +137,7 @@ function Navbar() {
 
                   <i className="fa-solid fa-bag-shopping"></i>
                   <span className="absolute bg-blue-500 text-blue-100 px-2 py-1 text-xs font-bold rounded-full -top-3 -right-3">
-                    99+
+                    {cartProducts.length}
                   </span>
                 </button>
               </Link>

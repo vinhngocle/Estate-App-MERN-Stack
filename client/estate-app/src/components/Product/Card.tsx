@@ -1,21 +1,26 @@
-import React from "react";
-
-interface Product {
-  id: number;
-  title: string;
-  image: string;
-  description: string;
-  category: string;
-  price: number;
-  // Add other properties of the product here if needed
-}
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { IProduct } from "../../interfaces/Product.interface";
 
 interface CardProps {
-  product: Product;
-  addToCart: (Product: Product) => void;
+  product: IProduct;
+  addToCart: (Product: IProduct) => void;
+  removeToCart: (id: number) => void;
 }
 
-function Card({ product, addToCart }: CardProps) {
+function Card({ product, addToCart, removeToCart }: CardProps) {
+  const location = useLocation();
+  const [isCart, setIsCart] = useState(false);
+  const { pathname } = location;
+
+  useEffect(() => {
+    if (pathname === "/cart") {
+      setIsCart(true);
+    } else {
+      setIsCart(false);
+    }
+  }, [pathname]);
+
   return (
     <div className="py-2 px-2">
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -38,27 +43,25 @@ function Card({ product, addToCart }: CardProps) {
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 line-clamp-4">
             {product.description}
           </p>
-          <button
-            onClick={() => addToCart(product)}
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Add to Card
-            <svg
-              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
+          {!isCart && (
+            <button
+              onClick={() => addToCart(product)}
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </button>
+              <span>Add to Card</span>
+              <i className="fa-solid fa-plus pl-2"></i>
+            </button>
+          )}
+
+          {isCart && (
+            <button
+              onClick={() => removeToCart(product.id)}
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+            >
+              <span>Remove card</span>
+              <i className="fa-solid fa-trash pl-2"></i>
+            </button>
+          )}
         </div>
       </div>
     </div>

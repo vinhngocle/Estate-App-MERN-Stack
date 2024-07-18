@@ -1,16 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-interface CartItem {
-  id: number;
-  title: string;
-  image: string;
-  description: string;
-  price: number;
-  quantity: number;
-}
+import { IProduct } from "../interfaces/Product.interface";
 
 interface cartState {
-  carts: CartItem[];
+  carts: IProduct[];
 }
 
 const initialState: cartState = {
@@ -24,9 +16,13 @@ const cartSlice = createSlice({
     add(state, action) {
       state.carts.push(action.payload);
     },
+
+    remove(state, action) {
+      state.carts = state.carts.filter((item) => item.id !== action.payload);
+    },
   },
 });
 
-export const { add } = cartSlice.actions;
+export const { add, remove } = cartSlice.actions;
 
 export default cartSlice.reducer;
