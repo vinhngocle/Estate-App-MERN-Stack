@@ -4,29 +4,38 @@ import { AppThunk } from "./store";
 
 interface productState {
   data: IProduct[];
+  status: string;
 }
 
 const initialState: productState = {
   data: [],
+  status: "idle",
 };
 
 const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    fetchProducts(state, action) {
-      state.data = action.payload;
-    },
-
-    // extraReducers: (builder) => {
-    //   builder.addCase(getProducts.fulfilled, (state, action) => {
-    //     state.data = action.payload;
-    //   });
+    // fetchProducts(state, action) {
+    //   state.data = action.payload;
     // },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProducts.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getProducts.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.status = "idle";
+      })
+      .addCase(getProducts.rejected, (state, action) => {
+        state.status = "error";
+      });
   },
 });
 
-export const { fetchProducts } = productSlice.actions;
+// export const { extraReducers } = productSlice.actions;
 
 export default productSlice.reducer;
 
@@ -41,14 +50,14 @@ export default productSlice.reducer;
 //   };
 // }
 
-export const getProducts = (): AppThunk => async (dispatch, getState) => {
-  const response = await fetch("https://fakestoreapi.com/products");
-  const data = await response.json();
-  dispatch(fetchProducts(data));
-};
-
-// export const getProducts = createAsyncThunk("products/get", async () => {
+// export const getProducts = (): AppThunk => async (dispatch, getState) => {
 //   const response = await fetch("https://fakestoreapi.com/products");
 //   const data = await response.json();
-//   return data;
-// });
+//   dispatch(fetchProducts(data));
+// };
+
+export const getProducts = createAsyncThunk("products/get", async () => {
+  const response = await fetch("https://fakestoreapi.com/products");
+  const data = await response.json();
+  return data;
+});

@@ -9,7 +9,9 @@ import { RootState } from "../store/store";
 function ProductPage() {
   const dispatch = useDispatch();
   // const [products, setProducts] = useState([]);
-  const products = useSelector((state: RootState) => state.product.data);
+  const { data: products, status } = useSelector(
+    (state: RootState) => state.product
+  );
 
   useEffect(() => {
     // api
@@ -19,6 +21,18 @@ function ProductPage() {
 
     dispatch(getProducts());
   }, [dispatch]);
+
+  if (status === "loading") {
+    return <p className="text-3xl text-center p-4">Loading ....</p>;
+  }
+
+  if (status === "error") {
+    return (
+      <p className="text-3xl text-center text-red-600">
+        Something went wrong! Try again later.
+      </p>
+    );
+  }
 
   const addToCart = (product: IProduct) => {
     dispatch(add(product));
