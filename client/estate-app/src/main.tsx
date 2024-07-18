@@ -6,11 +6,18 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TodoListPage from "./pages/TodoListPage.tsx";
 import NasaAppPage from "./pages/GymAppPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
+import Navbar from "./components/Navbar/Navbar.tsx";
+import Layout from "./components/Layout.tsx";
+import CartPage from "./pages/CartPage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <Layout>
+        <App />
+      </Layout>
+    ),
   },
   {
     path: "/todo-list",
@@ -22,7 +29,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/product",
-    element: <ProductPage />,
+    element: (
+      <Layout>
+        <ProductPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/cart",
+    element: (
+      <Layout>
+        <CartPage />
+      </Layout>
+    ),
   },
 ]);
 

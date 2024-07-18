@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -59,25 +58,29 @@ function Navbar() {
             </div>
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex flex-shrink-0 items-center">
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                  alt="Your Company"
-                />
+                <Link to="/">
+                  <img
+                    className="h-8 w-auto"
+                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    alt="Your Company"
+                  />
+                </Link>
               </div>
               <div className=" sm:ml-6 sm:block">
                 <div className="flex space-x-4">
                   {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-                  <a
-                    href="#"
+                  <div
                     className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
                     aria-current="page"
                   >
-                    Dashboard
-                  </a>
+                    <Link to="/">Dashboard</Link>
+                  </div>
                   <div className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
                     <Link to="/product">Products</Link>
                   </div>
+                  {/* <div className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+                    <Link to="/cart">Carts</Link>
+                  </div> */}
                   {/* <a
                     href="#"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -120,17 +123,20 @@ function Navbar() {
                 </span> */}
               </button>
 
-              <button
-                type="button"
-                className="px-3 py-1 relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              >
-                <span className="absolute -inset-1.5"></span>
-                <span className="sr-only">View bags</span>
-                <i className="fa-solid fa-bag-shopping"></i>
-                <span className="absolute bg-blue-500 text-blue-100 px-2 py-1 text-xs font-bold rounded-full -top-3 -right-3">
-                  99+
-                </span>
-              </button>
+              <Link to="/cart">
+                <button
+                  type="button"
+                  className="px-3 py-1 relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                >
+                  <span className="absolute -inset-1.5"></span>
+                  <span className="sr-only">View bags</span>
+
+                  <i className="fa-solid fa-bag-shopping"></i>
+                  <span className="absolute bg-blue-500 text-blue-100 px-2 py-1 text-xs font-bold rounded-full -top-3 -right-3">
+                    99+
+                  </span>
+                </button>
+              </Link>
 
               {/* <!-- Profile dropdown --> */}
               <div className="relative ml-3">
