@@ -5,6 +5,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TodoListPage from "./pages/TodoListPage.tsx";
 import NasaAppPage from "./pages/GymAppPage.tsx";
+import ProductPage from "./pages/ProductPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/gym-app",
     element: <NasaAppPage />,
+  },
+  {
+    path: "/product",
+    element: <ProductPage />,
   },
 ]);
 
