@@ -8,6 +8,7 @@ import NasaAppPage from "./pages/GymAppPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import Layout from "./components/Layout.tsx";
 import CartPage from "./pages/CartPage.tsx";
+import BookPage from "./pages/BookPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/gym-app",
     element: <NasaAppPage />,
+  },
+  {
+    path: "/book",
+    element: <BookPage />,
   },
 ]);
 

@@ -10,6 +10,9 @@ function App() {
         <li className="hover:text-blue-800">
           <Link to="/gym-app">Gym App</Link>
         </li>
+        <li className="hover:text-blue-800">
+          <Link to="/book">Book List</Link>
+        </li>
       </ul>
     </div>
   );
