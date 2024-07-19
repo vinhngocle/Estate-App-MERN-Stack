@@ -18,10 +18,10 @@ function TodoInput({
 
   return (
     <header>
-      <div className="row d-flex p-4 justify-content-start">
-        <div className="col-7 d-flex justify-content-center">
+      <div className="p-10">
+        <div className="">
           <input
-            className="form-control"
+            className="py-1 px-2 border border-slate-300 rounded-md shodow-md placeholder-slate-400 focus:outline-none w-[500px] mr-3"
             type="text"
             placeholder="Enter todo ..."
             value={todoValue}
@@ -29,10 +29,10 @@ function TodoInput({
           />
           <button
             type="button"
-            className="btn btn-primary mx-4"
+            className="bg-sky-500 hover:bg-sky-700 px-5 py-1 rounded-md hover:text-white"
             onClick={handleAddTodo}
           >
-            Add
+            <p>Add</p>
           </button>
         </div>
       </div>

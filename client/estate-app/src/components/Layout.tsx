@@ -1,16 +1,14 @@
-import { ReactNode } from "react";
 import Navbar from "./Navbar/Navbar";
+import { Outlet } from "react-router-dom";
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-function Layout({ children }: LayoutProps) {
+function Layout() {
   return (
-    <div>
+    <>
       <Navbar />
-      <main>{children}</main>
-    </div>
+      <main>
+        <Outlet />
+      </main>
+    </>
   );
 }
 
