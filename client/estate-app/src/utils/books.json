@@ -20,6 +20,13 @@
       "bookName": "Vue JS",
       "rating": 5,
       "status": "Available"
+    },
+    {
+      "id": 4,
+      "author": "Steven",
+      "bookName": "Harry Porter",
+      "rating": 8,
+      "status": "Not Available"
     }
   ]
 }
