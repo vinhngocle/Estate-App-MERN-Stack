@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBooks } from "../actions/book/bookAction";
+import ModalCreate from "../components/Book/ModalCreate";
 
 function BookPage() {
   const dispatch = useDispatch();
@@ -13,6 +14,9 @@ function BookPage() {
   return (
     <>
       {/* form create */}
+      {/* <div>
+        <ModalCreate />
+      </div> */}
       <div className="p-2">
         <h3>Total book: 0</h3>
         <h3>Available book: 0</h3>
@@ -132,7 +136,7 @@ function BookPage() {
                     type="text"
                     name="hs-table-with-pagination-search"
                     id="hs-table-with-pagination-search"
-                    className="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                    className="border py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                     placeholder="Search for items"
                   />
                   <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
@@ -152,6 +156,11 @@ function BookPage() {
                       <path d="m21 21-4.3-4.3"></path>
                     </svg>
                   </div>
+                </div>
+                <div className="text-right">
+                  <button className="bg-blue-400 p-2 rounded text-white hover:bg-blue-600">
+                    Create Book
+                  </button>
                 </div>
               </div>
               <div className="overflow-hidden">
