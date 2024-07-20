@@ -1,0 +1,25 @@
+{
+  "Books": [
+    {
+      "id": 1,
+      "author": "John",
+      "bookName": "React JS",
+      "rating": 5,
+      "status": "Available"
+    },
+    {
+      "id": 2,
+      "author": "Tommy",
+      "bookName": "Javascript Zero",
+      "rating": 9,
+      "status": "Available"
+    },
+    {
+      "id": 3,
+      "author": "Abby",
+      "bookName": "Vue JS",
+      "rating": 5,
+      "status": "Available"
+    }
+  ]
+}

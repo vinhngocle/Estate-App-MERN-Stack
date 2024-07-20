@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getBooks } from "../actions/book/bookAction";
 
 function BookPage() {
+  const dispatch = useDispatch();
+  const { data, isLoading, error } = useSelector((state) => state.getBooks);
+
+  useEffect(() => {
+    dispatch(getBooks());
+  }, [dispatch]);
+
   return (
     <>
       {/* form create */}
       <div className="p-2">
         <h3>Total book: 0</h3>
         <h3>Available book: 0</h3>
+        {data.map((book) => (
+          <li key={book.id}>{book.bookName}</li>
+        ))}
       </div>
       <form action="" className="p-6">
         <div className="px-4 py-6 space-y-12 border border-sky-700">

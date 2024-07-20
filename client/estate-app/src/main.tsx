@@ -8,7 +8,9 @@ import NasaAppPage from "./pages/GymAppPage.tsx";
 import ProductPage from "./pages/ProductPage.tsx";
 import Layout from "./components/Layout.tsx";
 import CartPage from "./pages/CartPage.tsx";
-import BookPage from "./pages/BookPage.tsx";
+import BookPage from "./pages/BookPage.jsx";
+import configureStore from "./store/configureStore.js";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter([
   {
@@ -43,8 +45,12 @@ const router = createBrowserRouter([
   },
 ]);
 
+// const store = configureStore();
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={configureStore}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
