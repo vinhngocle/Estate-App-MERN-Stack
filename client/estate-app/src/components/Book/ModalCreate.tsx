@@ -1,149 +1,156 @@
 import { useState } from "react";
 
-function ModalCreate() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+interface Book {
+  id: number;
+  author: string;
+  bookName: string;
+  rating: string;
+  status: string;
+}
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+interface ModalCreateProps {
+  toggleModal: () => void;
+  handleSave: (form: Book) => void;
+}
+
+function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
+  const [bookName, setBookName] = useState("");
+  const [author, setAuthor] = useState("");
+  const [status, setStatus] = useState("Available");
+  const [rating, setRating] = useState("Excellent");
+
+  const handleFormSubmit = () => {
+    const newBook: Book = {
+      id: Math.floor(Math.random() * 1000), // You can replace this with a proper ID generation logic
+      author,
+      bookName,
+      rating,
+      status,
+    };
+    handleSave(newBook);
+    toggleModal();
   };
 
   return (
-    <div>
-      <button
-        onClick={toggleModal}
-        data-modal-target="crud-modal"
-        data-modal-toggle="crud-modal"
-        className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button"
-      >
-        Toggle modal
-      </button>
-      {isModalOpen && (
-        <div
-          id="crud-modal"
-          tab-index="-1"
-          aria-hidden="true"
-          className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-        >
-          <div className="relative p-4 w-full max-w-md max-h-full">
-            {/* <!-- Modal content --> */}
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              {/* <!-- Modal header --> */}
-              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Create New Product
-                </h3>
-                <button
-                  type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                  data-modal-toggle="crud-modal"
-                >
-                  <svg
-                    className="w-3 h-3"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 14 14"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                    />
-                  </svg>
-                  <span className="sr-only">Close modal</span>
-                </button>
-              </div>
-              {/* <!-- Modal body --> */}
-              <form className="p-4 md:p-5">
-                <div className="grid gap-4 mb-4 grid-cols-2">
-                  <div className="col-span-2">
+    <div
+      data-modal-backdrop="static"
+      aria-hidden="true"
+      className="bg-white rounded-lg shadow dark:bg-gray-700 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div className="relative p-4 w-full max-w-[1000px] max-h-full text-center">
+        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <form action="" className="p-6">
+            <div className="px-4 py-6 space-y-12 border border-sky-700">
+              <div className="">
+                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  Create Book
+                </h2>
+
+                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 text-left">
+                  <div className="sm:col-span-3">
                     <label
-                      htmlFor="name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="book-name"
+                      className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Name
+                      Book name
                     </label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Type product name"
-                    />
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="book-name"
+                        id="book-name"
+                        autoComplete="given-name"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={bookName}
+                        onChange={(e) => setBookName(e.target.value)}
+                      />
+                    </div>
                   </div>
-                  <div className="col-span-2 sm:col-span-1">
+                  <div className="sm:col-span-3">
                     <label
-                      htmlFor="price"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="author"
+                      className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Price
+                      Author
                     </label>
-                    <input
-                      type="number"
-                      name="price"
-                      id="price"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="$2999"
-                    />
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="author"
+                        id="author"
+                        autoComplete="given-name"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
+                      />
+                    </div>
                   </div>
-                  <div className="col-span-2 sm:col-span-1">
+                  <div className="sm:col-span-3">
                     <label
-                      htmlFor="category"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="status"
+                      className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Category
+                      Status
                     </label>
-                    <select
-                      id="category"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    >
-                      <option>Select category</option>
-                      <option value="TV">TV/Monitors</option>
-                      <option value="PC">PC</option>
-                      <option value="GA">Gaming/Console</option>
-                      <option value="PH">Phones</option>
-                    </select>
+                    <div className="mt-2">
+                      <select
+                        id="status"
+                        name="status"
+                        autoComplete="status"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                      >
+                        <option>Available</option>
+                        <option>Not Available</option>
+                      </select>
+                    </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-3">
                     <label
-                      htmlFor="description"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="rating"
+                      className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Product Description
+                      Rating
                     </label>
-                    <textarea
-                      id="description"
-                      className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Write product description here"
-                    ></textarea>
+                    <div className="mt-2">
+                      <select
+                        id="rating"
+                        name="rating"
+                        autoComplete="rating"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={rating}
+                        onChange={(e) => setRating(e.target.value)}
+                      >
+                        <option>Excellent</option>
+                        <option>Very Good</option>
+                        <option>Average</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-                <button
-                  type="submit"
-                  className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  <svg
-                    className="me-1 -ms-1 w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  Add new product
-                </button>
-              </form>
+              </div>
             </div>
-          </div>
+            <div className="mt-6 flex items-center justify-end gap-x-6">
+              <button
+                type="button"
+                className="text-sm font-semibold leading-6 text-gray-900"
+                onClick={toggleModal}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                value="Submit"
+                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={handleFormSubmit}
+              >
+                Save
+              </button>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
     </div>
   );
 }

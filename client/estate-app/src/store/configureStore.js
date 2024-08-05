@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import rootReducer from "../reducers/index";
-import watchBookSaga from "../saga/book/watchers";
+import rootSaga from "../saga/index";
 
 const sagaMiddleware = createSagaMiddleware();
 // mount it on the Store
@@ -12,6 +12,6 @@ const store = configureStore({
 });
 
 // then run the saga
-sagaMiddleware.run(watchBookSaga);
+sagaMiddleware.run(rootSaga);
 
 export default store;

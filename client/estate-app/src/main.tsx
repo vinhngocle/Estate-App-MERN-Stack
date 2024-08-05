@@ -29,6 +29,10 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <CartPage />,
       },
+      {
+        path: "/book",
+        element: <BookPage />,
+      },
     ],
   },
   {
@@ -38,10 +42,6 @@ const router = createBrowserRouter([
   {
     path: "/gym-app",
     element: <NasaAppPage />,
-  },
-  {
-    path: "/book",
-    element: <BookPage />,
   },
 ]);
 
