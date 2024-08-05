@@ -1,0 +1,28 @@
+version: "3"
+services:
+  server:
+    build:
+      # context: ../project-name
+      dockerfile: Dockerfile
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_HOST: localhost
+      DB_DATABASE: nestjs_mysql_tutorial
+    volumes:
+      - /usr/src/app/node_modules
+    ports:
+      - 4000:4000
+  mysql:
+    image: mysql:8.0.24
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_ROOT_USER: mysql
+      MYSQL_DATABASE: nestjs_mysql_tutorial
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/mysql/initdata:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
