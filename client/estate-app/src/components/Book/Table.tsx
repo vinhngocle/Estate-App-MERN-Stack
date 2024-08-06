@@ -3,7 +3,7 @@ import React from "react";
 interface Book {
   id: number;
   author: string;
-  bookName: string;
+  name: string;
   rating: string;
   status: string;
 }
@@ -130,7 +130,7 @@ function Table({ toggleModal, data }: TableProps) {
                           {book.author}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                          {book.bookName}
+                          {book.name}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                           {book.rating}

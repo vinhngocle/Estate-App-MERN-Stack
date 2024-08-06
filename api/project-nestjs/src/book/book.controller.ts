@@ -16,17 +16,20 @@ export class BookController {
 
   @Post()
   async createBook(@Body() dto: BookSaveDto) {
+    console.log('insert controller');
     return await this.bookService.insert(dto);
   }
 
   @Get()
   async getAllBook() {
-    return await this.bookService.findAll();
+    const books = await this.bookService.findAll();
+    return books;
   }
 
   @Get(':id')
   async getBook(@Param('id') id: number) {
-    return this.bookService.findById(id);
+    const book = this.bookService.findById(id);
+    return book;
   }
 
   @Put(':id')

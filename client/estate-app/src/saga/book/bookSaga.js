@@ -1,4 +1,5 @@
 import { call, put } from "redux-saga/effects";
+import { BookService } from "../../services/bookService";
 // import { GET_BOOKS } from "../actions/booksAction";
 import {
   GET_BOOKS_SUCCESS,
@@ -6,36 +7,29 @@ import {
   ADD_BOOK_SUCCESS,
   ADD_BOOK_FAILURE,
 } from "../../actions/book/types";
-import { books } from "../../__mock__/books";
+// import { books } from "../../__mock__/books";
 
-// let books = [];
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let books = [];
 
-function getLocalStorage() {
-  const getbooks = localStorage.getItem("books");
-  return JSON.parse(getbooks);
-}
+// function getBooks() {
+//   return axios
+//     .get("http://localhost:4000/book")
+//     .then((res) => res.data)
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// }
 
-function booksFetch() {
-  // return fetch("http://localhost:3500/Books").then(
-  //   (response) => (books = response.json())
-  // );
-  localStorage.setItem("books", JSON.stringify(books));
-  return getLocalStorage();
-}
-
-function addBook(obj) {
-  let booksLocal = getLocalStorage();
-  console.log("book local", booksLocal);
-  booksLocal.push({ ...obj, id: books.length + 1 });
-  // localStorage.setItem("books", JSON.stringify(booksLocal));
-  return booksLocal;
-}
+// function addBook(obj) {
+//   return axios.post("http://localhost:4000/book", obj);
+// }
 
 export function* getBooksSaga() {
   try {
-    // books = yield call(booksFetch);
-    const books = booksFetch();
-    yield put({ type: GET_BOOKS_SUCCESS, payload: books });
+    const books = yield call(BookService.getBooks);
+    // console.log("books", books);
+    yield put({ type: GET_BOOKS_SUCCESS, payload: books.data });
   } catch (error) {
     yield put({ type: GET_BOOKS_FAILURE, payload: error.message });
   }
@@ -43,11 +37,9 @@ export function* getBooksSaga() {
 
 export function* addBooksSaga(action) {
   try {
-    // const book = yield call(addBook, action.payload);
-    const updatedBooks = addBook(action.payload);
-    yield put({ type: ADD_BOOK_SUCCESS, payload: updatedBooks });
+    const response = yield call(BookService.createBook, action.payload);
+    yield put({ type: ADD_BOOK_SUCCESS, payload: response.data });
     yield call(getBooksSaga);
-    // console.log("books", books);
   } catch (error) {
     yield put({ type: ADD_BOOK_FAILURE, payload: error.message });
   }

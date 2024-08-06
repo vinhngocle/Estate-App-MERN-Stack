@@ -36,10 +36,6 @@ export const addBook = (state = initialState, action) => {
       return { ...state, isLoading: true };
     }
     case ADD_BOOK_SUCCESS: {
-      console.log("[...state.data, action.payload]", [
-        ...state.data,
-        action.payload,
-      ]);
       return {
         ...state,
         isLoading: false,

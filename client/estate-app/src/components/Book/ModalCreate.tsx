@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 interface Book {
-  id: number;
+  // id: number;
   author: string;
-  bookName: string;
+  name: string;
   rating: string;
   status: string;
 }
@@ -14,16 +14,16 @@ interface ModalCreateProps {
 }
 
 function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
-  const [bookName, setBookName] = useState("");
+  const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [status, setStatus] = useState("Available");
   const [rating, setRating] = useState("Excellent");
 
   const handleFormSubmit = () => {
     const newBook: Book = {
-      id: Math.floor(Math.random() * 1000), // You can replace this with a proper ID generation logic
+      // You can replace this with a proper ID generation logic
       author,
-      bookName,
+      name,
       rating,
       status,
     };
@@ -61,8 +61,8 @@ function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
                         id="book-name"
                         autoComplete="given-name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        value={bookName}
-                        onChange={(e) => setBookName(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                       />
                     </div>
                   </div>

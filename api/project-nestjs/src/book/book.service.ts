@@ -24,8 +24,8 @@ export class BookService {
 
   async insert(dto: BookSaveDto) {
     const newBook = {
-      author: dto.author,
-      name: dto.name,
+      author: dto.author?.trim(),
+      name: dto.name?.trim(),
       rating: dto.rating,
       status: dto.status,
     };
