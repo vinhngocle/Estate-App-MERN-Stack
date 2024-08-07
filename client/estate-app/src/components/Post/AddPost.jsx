@@ -18,7 +18,11 @@ function AddPost(props) {
         }
       />
       <br />
-      <Button disabled={state.text === ""} onClick={handleAddPost}>
+      <Button
+        disabled={state.text === ""}
+        onClick={handleAddPost}
+        variant="contained"
+      >
         Add
       </Button>
     </div>
