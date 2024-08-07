@@ -5,6 +5,9 @@ import {
   ADD_BOOK_START,
   ADD_BOOK_SUCCESS,
   ADD_BOOK_FAILURE,
+  REMOVE_BOOK_START,
+  REMOVE_BOOK_SUCCESS,
+  REMOVE_BOOK_FAILURE,
 } from "../../actions/book/types";
 
 const initialState = {
@@ -39,11 +42,37 @@ export const addBook = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        // book: action.payload,
+        book: action.payload,
         data: [...state.data, action.payload],
       };
     }
     case ADD_BOOK_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        // book: action.payload,
+        error: action.payload,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
+export const removeBook = (state = initialState, action) => {
+  switch (action.type) {
+    case REMOVE_BOOK_START: {
+      return { ...state, isLoading: true };
+    }
+    case REMOVE_BOOK_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        book: action.payload,
+        data: [...state.data, action.payload],
+      };
+    }
+    case REMOVE_BOOK_FAILURE: {
       return {
         ...state,
         isLoading: false,

@@ -10,10 +10,11 @@ interface Book {
 
 interface TableProps {
   toggleModal: () => void;
-  data: Book[];
+  books: Book[];
+  handleDelete: (id: number) => void;
 }
 
-function Table({ toggleModal, data }: TableProps) {
+function Table({ toggleModal, books, handleDelete }: TableProps) {
   return (
     <div className="flex flex-col px-4 py-6">
       <div className="-m-1.5 overflow-x-auto">
@@ -108,8 +109,8 @@ function Table({ toggleModal, data }: TableProps) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {Array.isArray(data) ? (
-                    data.map((book) => (
+                  {Array.isArray(books) ? (
+                    books.map((book) => (
                       <tr key={book.id}>
                         <td className="py-3 ps-4">
                           <div className="flex items-center h-5">
@@ -148,6 +149,7 @@ function Table({ toggleModal, data }: TableProps) {
                           <button
                             type="button"
                             className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none"
+                            onClick={() => handleDelete(book.id)}
                           >
                             <i className="fa-solid fa-trash"></i>
                           </button>

@@ -1,14 +1,20 @@
 import Axios from "../utils/axios";
 
-export class BookService {
-  static getBooks = async () => {
+export default {
+  getBooks: async () => {
     let response = await Axios.get("/book");
     return response;
-  };
+  },
 
-  static createBook = async (payload) => {
+  createBook: async (payload) => {
     let response = await Axios.post("/book", payload);
     console.log(response);
     return response;
-  };
-}
+  },
+
+  removeBook: async (id) => {
+    let response = await Axios.delete("/book", id);
+    console.log(response);
+    return response;
+  },
+};

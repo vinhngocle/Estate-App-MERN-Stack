@@ -1,5 +1,5 @@
 import { call, put } from "redux-saga/effects";
-import { BookService } from "../../services/bookService";
+import BookService from "../../services/bookService";
 // import { GET_BOOKS } from "../actions/booksAction";
 import {
   GET_BOOKS_SUCCESS,
@@ -38,7 +38,17 @@ export function* getBooksSaga() {
 export function* addBooksSaga(action) {
   try {
     const response = yield call(BookService.createBook, action.payload);
-    yield put({ type: ADD_BOOK_SUCCESS, payload: response.data });
+    yield put({ type: ADD_BOOK_SUCCESS, payload: response });
+    yield call(getBooksSaga);
+  } catch (error) {
+    yield put({ type: ADD_BOOK_FAILURE, payload: error.message });
+  }
+}
+
+export function* removeBooksSaga(action) {
+  try {
+    const response = yield call(BookService.removeBook, action.payload);
+    yield put({ type: ADD_BOOK_SUCCESS, payload: response });
     yield call(getBooksSaga);
   } catch (error) {
     yield put({ type: ADD_BOOK_FAILURE, payload: error.message });

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface Book {
   // id: number;
   author: string;
@@ -10,27 +8,17 @@ interface Book {
 
 interface ModalCreateProps {
   toggleModal: () => void;
-  handleSave: (form: Book) => void;
+  handleFormSubmit: (form: Book) => void;
+  bookForm: Book;
+  handleStateChange: (value: object) => void;
 }
 
-function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
-  const [name, setName] = useState("");
-  const [author, setAuthor] = useState("");
-  const [status, setStatus] = useState("Available");
-  const [rating, setRating] = useState("Excellent");
-
-  const handleFormSubmit = () => {
-    const newBook: Book = {
-      // You can replace this with a proper ID generation logic
-      author,
-      name,
-      rating,
-      status,
-    };
-    handleSave(newBook);
-    toggleModal();
-  };
-
+function ModalCreate({
+  toggleModal,
+  handleFormSubmit,
+  bookForm,
+  handleStateChange,
+}: ModalCreateProps) {
   return (
     <div
       data-modal-backdrop="static"
@@ -56,13 +44,19 @@ function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
                     </label>
                     <div className="mt-2">
                       <input
+                        required
                         type="text"
                         name="book-name"
                         id="book-name"
                         autoComplete="given-name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={bookForm.name}
+                        onChange={(e) =>
+                          handleStateChange({
+                            ...bookForm,
+                            name: e.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -75,13 +69,19 @@ function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
                     </label>
                     <div className="mt-2">
                       <input
+                        required
                         type="text"
                         name="author"
                         id="author"
                         autoComplete="given-name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        value={author}
-                        onChange={(e) => setAuthor(e.target.value)}
+                        value={bookForm.author}
+                        onChange={(e) =>
+                          handleStateChange({
+                            ...bookForm,
+                            author: e.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -98,8 +98,13 @@ function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
                         name="status"
                         autoComplete="status"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
+                        value={bookForm.status}
+                        onChange={(e) =>
+                          handleStateChange({
+                            ...bookForm,
+                            status: e.target.value,
+                          })
+                        }
                       >
                         <option>Available</option>
                         <option>Not Available</option>
@@ -119,8 +124,13 @@ function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
                         name="rating"
                         autoComplete="rating"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        value={rating}
-                        onChange={(e) => setRating(e.target.value)}
+                        value={bookForm.rating}
+                        onChange={(e) =>
+                          handleStateChange({
+                            ...bookForm,
+                            rating: e.target.value,
+                          })
+                        }
                       >
                         <option>Excellent</option>
                         <option>Very Good</option>
@@ -143,7 +153,7 @@ function ModalCreate({ toggleModal, handleSave }: ModalCreateProps) {
                 type="button"
                 value="Submit"
                 className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={handleFormSubmit}
+                onClick={() => handleFormSubmit(bookForm)}
               >
                 Save
               </button>

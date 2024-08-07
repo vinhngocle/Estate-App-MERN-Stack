@@ -20,7 +20,10 @@ export const getBooksFailure = (payload) => ({
   payload,
 });
 
-export const addBook = () => ({ type: ADD_BOOK_START });
+export const addBook = (payload) => ({
+  type: ADD_BOOK_START,
+  payload,
+});
 export const addBookSuccess = (payload) => ({
   type: ADD_BOOK_SUCCESS,
   payload,
@@ -31,7 +34,7 @@ export const addBookFailure = (payload) => ({
   payload,
 });
 
-export const removeBook = () => ({ type: REMOVE_BOOK_START });
+export const removeBook = (payload) => ({ type: REMOVE_BOOK_START, payload });
 export const removeBookSuccess = (payload) => ({
   type: REMOVE_BOOK_SUCCESS,
   payload,
