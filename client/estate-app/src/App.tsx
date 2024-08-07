@@ -13,6 +13,9 @@ function App() {
         <li className="hover:text-blue-800">
           <Link to="/book">Book List</Link>
         </li>
+        <li className="hover:text-blue-800">
+          <Link to="/post">Post List</Link>
+        </li>
       </ul>
     </div>
   );
