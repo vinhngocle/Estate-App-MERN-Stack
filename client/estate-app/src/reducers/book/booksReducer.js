@@ -16,6 +16,7 @@ import {
 const initialState = {
   data: [],
   book: {},
+  meta: {},
   isLoading: false,
   error: null,
 };
@@ -26,7 +27,13 @@ export const getBooks = (state = initialState, action) => {
       return { ...state, isLoading: true };
     }
     case GET_BOOKS_SUCCESS: {
-      return { ...state, isLoading: false, data: action.payload };
+      console.log("action.payload", action.payload);
+      return {
+        ...state,
+        isLoading: false,
+        data: action.payload.data,
+        meta: action.payload.meta,
+      };
     }
     case GET_BOOKS_FAILURE: {
       return { ...state, isLoading: false, data: action.payload };

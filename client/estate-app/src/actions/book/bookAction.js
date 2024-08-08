@@ -13,7 +13,7 @@ import {
   UPDATE_BOOK_FAILURE,
 } from "./types";
 
-export const getBooks = () => ({ type: GET_BOOKS_START });
+export const getBooks = (payload) => ({ type: GET_BOOKS_START, payload });
 export const getBooksSuccess = (payload) => ({
   type: GET_BOOKS_SUCCESS,
   payload,

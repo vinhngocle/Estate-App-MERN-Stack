@@ -17,7 +17,7 @@ export function* getPostsSaga() {
 }
 
 export function* addPostSaga(action) {
-  console.log("action", action);
+  // console.log("action", action);
   try {
     const response = yield call(postService.add, action.payload);
     yield put({ type: ADDED_POST, payload: response });
@@ -27,7 +27,7 @@ export function* addPostSaga(action) {
 }
 
 export function* updatePostSaga(action) {
-  console.log("action", action);
+  // console.log("action", action);
   try {
     const response = yield call(postService.update, action.payload);
     yield put({ type: UPDATED_POST, payload: response });

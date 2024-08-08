@@ -11,7 +11,10 @@ import ModalCreate from "../components/Book/ModalCreate";
 
 function BookPage() {
   const dispatch = useDispatch();
-  const { data, isLoading, error } = useSelector((state) => state.getBooks);
+  const { data, meta, isLoading, error } = useSelector(
+    (state) => state.getBooks
+  );
+  console.log(meta);
   const [form, setForm] = useState({
     id: "",
     name: "",
@@ -82,6 +85,13 @@ function BookPage() {
     openModal();
   };
 
+  const handlePageChange = (pageNumber) => {
+    const query = {
+      page: pageNumber,
+    };
+    dispatch(getBooks(query));
+  };
+
   const cleanForm = () => {
     setForm({
       id: "",
@@ -111,6 +121,9 @@ function BookPage() {
         openModal={openModalCreate}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
+        pageCount={meta.pageCount}
+        currentpage={meta.page}
+        handlePageChange={handlePageChange}
       />
     </>
   );

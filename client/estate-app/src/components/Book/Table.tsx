@@ -13,9 +13,20 @@ interface TableProps {
   books: Book[];
   handleDelete: (id: number) => void;
   handleEdit: (book: Book) => void;
+  pageCount: number;
+  currentpage: number;
+  handlePageChange: (page: number) => void;
 }
 
-function Table({ openModal, books, handleDelete, handleEdit }: TableProps) {
+function Table({
+  openModal,
+  books,
+  handleDelete,
+  handleEdit,
+  pageCount,
+  currentpage,
+  handlePageChange,
+}: TableProps) {
   return (
     <div className="flex flex-col px-4 py-6">
       <div className="-m-1.5 overflow-x-auto">
@@ -171,18 +182,30 @@ function Table({ openModal, books, handleDelete, handleEdit }: TableProps) {
                 <button
                   type="button"
                   className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
+                  onClick={() => handlePageChange(currentpage - 1)}
+                  disabled={currentpage === 1}
                 >
                   <span aria-hidden="true">«</span>
                   <span className="sr-only">Previous</span>
                 </button>
-                <button
-                  type="button"
-                  className="min-w-[40px] flex justify-center items-center text-gray-800 hover:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none"
-                  aria-current="page"
-                >
-                  1
-                </button>
-                <button
+
+                {[...Array(pageCount)].map((e, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className={`min-w-[40px] flex justify-center items-center py-2.5 text-sm rounded-full ${
+                      currentpage === i + 1
+                        ? "bg-blue-400 text-white"
+                        : "text-gray-800 hover:bg-gray-100"
+                    }`}
+                    aria-current={currentpage === i + 1 ? "page" : undefined}
+                    onClick={() => handlePageChange(i + 1)}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+
+                {/* <button
                   type="button"
                   className="min-w-[40px] flex justify-center items-center text-gray-800 hover:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none"
                 >
@@ -193,10 +216,12 @@ function Table({ openModal, books, handleDelete, handleEdit }: TableProps) {
                   className="min-w-[40px] flex justify-center items-center text-gray-800 hover:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none"
                 >
                   3
-                </button>
+                </button> */}
                 <button
                   type="button"
                   className="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
+                  onClick={() => handlePageChange(currentpage + 1)}
+                  disabled={currentpage === pageCount}
                 >
                   <span className="sr-only">Next</span>
                   <span aria-hidden="true">»</span>

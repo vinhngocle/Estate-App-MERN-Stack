@@ -12,7 +12,7 @@ import {
 // import { books } from "../../__mock__/books";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-let books = [];
+// let books = [];
 
 // function getBooks() {
 //   return axios
@@ -27,11 +27,12 @@ let books = [];
 //   return axios.post("http://localhost:4000/book", obj);
 // }
 
-export function* getBooksSaga() {
+export function* getBooksSaga(action) {
   try {
-    const books = yield call(BookService.getBooks);
+    console.log("getBooksSaga", action.payload);
+    const response = yield call(BookService.getBooks, action.payload);
     // console.log("books", books);
-    yield put({ type: GET_BOOKS_SUCCESS, payload: books.data });
+    yield put({ type: GET_BOOKS_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: GET_BOOKS_FAILURE, payload: error.message });
   }
@@ -59,7 +60,6 @@ export function* removeBooksSaga(action) {
 
 export function* updateBooksSaga(action) {
   try {
-    console.log("action aa", action);
     const response = yield call(
       BookService.updateBook,
       action.payload.id,
