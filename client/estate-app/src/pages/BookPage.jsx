@@ -1,31 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getBooks, addBook, removeBook } from "../actions/book/bookAction";
-import ModalCreate from "../components/Book/ModalCreate";
+import {
+  getBooks,
+  addBook,
+  removeBook,
+  updateBook,
+} from "../actions/book/bookAction";
 import Table from "../components/Book/Table";
-
-// interface Book {
-//   author: string;
-//   name: string;
-//   rating: number;
-//   status: string;
-// }
+import ModalCreate from "../components/Book/ModalCreate";
 
 function BookPage() {
   const dispatch = useDispatch();
   const { data, isLoading, error } = useSelector((state) => state.getBooks);
   const [form, setForm] = useState({
+    id: "",
     name: "",
     author: "",
-    rating: "Available",
-    status: "Excellent",
+    rating: "Excellent",
+    status: "Available",
   });
 
-  // const [name, setName] = useState("");
-  // const [author, setAuthor] = useState("");
-  // const [status, setStatus] = useState("Available");
-  // const [rating, setRating] = useState("Excellent");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [titleModal, setTitleModal] = useState("");
 
   useEffect(() => {
     dispatch(getBooks());
@@ -39,25 +35,61 @@ function BookPage() {
     return <div className="p-4 text-center">Error: {error.message}</div>;
   }
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const openModalCreate = () => {
+    setTitleModal("Create Modal");
+    cleanForm();
+    openModal();
   };
 
   const handleSave = async () => {
-    // console.log("new book", newBook);
     const newBook = {
+      id: form.id,
       name: form.name,
       author: form.author,
       rating: form.rating,
       status: form.status,
     };
-    console.log("new book", newBook);
-    await dispatch(addBook(newBook));
-    toggleModal();
+
+    if (newBook.id === "" || newBook.id === null) {
+      await dispatch(addBook(newBook));
+    } else {
+      await dispatch(updateBook(newBook));
+    }
+    closeModal();
   };
 
   const handleDelete = async (id) => {
     await dispatch(removeBook(id));
+  };
+
+  const handleEdit = async (book) => {
+    setForm({
+      id: book.id,
+      name: book.name,
+      author: book.author,
+      rating: book.rating,
+      status: book.status,
+    });
+    setTitleModal("Edit Modal");
+    openModal();
+  };
+
+  const cleanForm = () => {
+    setForm({
+      id: "",
+      name: "",
+      author: "",
+      rating: "Excellent",
+      status: "Available",
+    });
   };
 
   return (
@@ -65,7 +97,8 @@ function BookPage() {
       {/* form create */}
       {isModalOpen && (
         <ModalCreate
-          toggleModal={toggleModal}
+          titleModal={titleModal}
+          closeModal={closeModal}
           handleFormSubmit={handleSave}
           bookForm={form}
           handleStateChange={setForm}
@@ -75,8 +108,9 @@ function BookPage() {
       {/* list tables  */}
       <Table
         books={data}
-        toggleModal={toggleModal}
+        openModal={openModalCreate}
         handleDelete={handleDelete}
+        handleEdit={handleEdit}
       />
     </>
   );

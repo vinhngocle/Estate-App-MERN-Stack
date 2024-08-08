@@ -6,6 +6,8 @@ import {
   GET_BOOKS_FAILURE,
   ADD_BOOK_SUCCESS,
   ADD_BOOK_FAILURE,
+  UPDATE_BOOK_SUCCESS,
+  UPDATE_BOOK_FAILURE,
 } from "../../actions/book/types";
 // import { books } from "../../__mock__/books";
 
@@ -52,5 +54,20 @@ export function* removeBooksSaga(action) {
     yield call(getBooksSaga);
   } catch (error) {
     yield put({ type: ADD_BOOK_FAILURE, payload: error.message });
+  }
+}
+
+export function* updateBooksSaga(action) {
+  try {
+    console.log("action aa", action);
+    const response = yield call(
+      BookService.updateBook,
+      action.payload.id,
+      action.payload
+    );
+    yield put({ type: UPDATE_BOOK_SUCCESS, payload: response });
+    yield call(getBooksSaga);
+  } catch (error) {
+    yield put({ type: UPDATE_BOOK_FAILURE, payload: error.message });
   }
 }

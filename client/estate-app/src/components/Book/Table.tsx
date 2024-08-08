@@ -9,12 +9,13 @@ interface Book {
 }
 
 interface TableProps {
-  toggleModal: () => void;
+  openModal: () => void;
   books: Book[];
   handleDelete: (id: number) => void;
+  handleEdit: (book: Book) => void;
 }
 
-function Table({ toggleModal, books, handleDelete }: TableProps) {
+function Table({ openModal, books, handleDelete, handleEdit }: TableProps) {
   return (
     <div className="flex flex-col px-4 py-6">
       <div className="-m-1.5 overflow-x-auto">
@@ -51,7 +52,7 @@ function Table({ toggleModal, books, handleDelete }: TableProps) {
               <div className="text-right">
                 <button
                   className="bg-blue-400 p-2 rounded text-white hover:bg-blue-600"
-                  onClick={toggleModal}
+                  onClick={openModal}
                 >
                   Create Book
                 </button>
@@ -80,25 +81,25 @@ function Table({ toggleModal, books, handleDelete }: TableProps) {
                       scope="col"
                       className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                     >
-                      Author
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-                    >
                       Booke Name
                     </th>
                     <th
                       scope="col"
                       className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                     >
-                      Rating
+                      Author
                     </th>
                     <th
                       scope="col"
                       className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                     >
                       Status
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                    >
+                      Rating
                     </th>
                     <th
                       scope="col"
@@ -127,22 +128,23 @@ function Table({ toggleModal, books, handleDelete }: TableProps) {
                             </label>
                           </div>
                         </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                          {book.name}
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                           {book.author}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                          {book.name}
+                          {book.status}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                           {book.rating}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                          {book.status}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                           <button
                             type="button"
                             className="px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
+                            onClick={() => handleEdit(book)}
                           >
                             <i className="fa-solid fa-pen-to-square"></i>
                           </button>

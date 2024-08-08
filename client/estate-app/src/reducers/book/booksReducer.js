@@ -8,6 +8,9 @@ import {
   REMOVE_BOOK_START,
   REMOVE_BOOK_SUCCESS,
   REMOVE_BOOK_FAILURE,
+  UPDATE_BOOK_START,
+  UPDATE_BOOK_SUCCESS,
+  UPDATE_BOOK_FAILURE,
 } from "../../actions/book/types";
 
 const initialState = {
@@ -73,6 +76,32 @@ export const removeBook = (state = initialState, action) => {
       };
     }
     case REMOVE_BOOK_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        // book: action.payload,
+        error: action.payload,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
+export const updateBook = (state = initialState, action) => {
+  switch (action.type) {
+    case UPDATE_BOOK_START: {
+      return { ...state, isLoading: true };
+    }
+    case UPDATE_BOOK_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        book: action.payload,
+        data: [...state.data, action.payload],
+      };
+    }
+    case UPDATE_BOOK_FAILURE: {
       return {
         ...state,
         isLoading: false,

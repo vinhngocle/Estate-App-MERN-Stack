@@ -1,6 +1,5 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 import {
-  GET_POSTS,
   GOT_POSTS,
   ADDED_POST,
   UPDATED_POST,

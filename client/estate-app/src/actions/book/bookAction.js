@@ -8,6 +8,9 @@ import {
   REMOVE_BOOK_START,
   REMOVE_BOOK_SUCCESS,
   REMOVE_BOOK_FAILURE,
+  UPDATE_BOOK_START,
+  UPDATE_BOOK_SUCCESS,
+  UPDATE_BOOK_FAILURE,
 } from "./types";
 
 export const getBooks = () => ({ type: GET_BOOKS_START });
@@ -42,5 +45,19 @@ export const removeBookSuccess = (payload) => ({
 
 export const removeBookFailure = (payload) => ({
   type: REMOVE_BOOK_FAILURE,
+  payload,
+});
+
+export const updateBook = (payload) => ({
+  type: UPDATE_BOOK_START,
+  payload,
+});
+export const updateBookSuccess = (payload) => ({
+  type: UPDATE_BOOK_SUCCESS,
+  payload,
+});
+
+export const updateBookFailure = (payload) => ({
+  type: UPDATE_BOOK_FAILURE,
   payload,
 });

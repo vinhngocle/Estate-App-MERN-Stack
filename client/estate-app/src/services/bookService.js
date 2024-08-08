@@ -13,7 +13,16 @@ export default {
   },
 
   removeBook: async (id) => {
-    let response = await Axios.delete("/book", id);
+    console.log("payload remove", id);
+    let response = await Axios.delete(`/book/${id}`);
+    console.log(response);
+    return response;
+  },
+
+  updateBook: async (id, payload) => {
+    console.log("id update ", id);
+    console.log("payload", payload);
+    let response = await Axios.put(`/book/${id}`, payload);
     console.log(response);
     return response;
   },

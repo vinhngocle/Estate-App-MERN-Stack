@@ -1,5 +1,5 @@
 interface Book {
-  // id: number;
+  id: number;
   author: string;
   name: string;
   rating: string;
@@ -7,14 +7,16 @@ interface Book {
 }
 
 interface ModalCreateProps {
-  toggleModal: () => void;
+  titleModal: string;
+  closeModal: () => void;
   handleFormSubmit: (form: Book) => void;
   bookForm: Book;
   handleStateChange: (value: object) => void;
 }
 
 function ModalCreate({
-  toggleModal,
+  titleModal,
+  closeModal,
   handleFormSubmit,
   bookForm,
   handleStateChange,
@@ -31,7 +33,7 @@ function ModalCreate({
             <div className="px-4 py-6 space-y-12 border border-sky-700">
               <div className="">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
-                  Create Book
+                  {titleModal}
                 </h2>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 text-left">
@@ -106,8 +108,8 @@ function ModalCreate({
                           })
                         }
                       >
-                        <option>Available</option>
-                        <option>Not Available</option>
+                        <option value="Available">Available</option>
+                        <option value="Not Available">Not Available</option>
                       </select>
                     </div>
                   </div>
@@ -132,9 +134,9 @@ function ModalCreate({
                           })
                         }
                       >
-                        <option>Excellent</option>
-                        <option>Very Good</option>
-                        <option>Average</option>
+                        <option value="Excellent">Excellent</option>
+                        <option value="Very Good">Very Good</option>
+                        <option value="Average">Average</option>
                       </select>
                     </div>
                   </div>
@@ -145,7 +147,7 @@ function ModalCreate({
               <button
                 type="button"
                 className="text-sm font-semibold leading-6 text-gray-900"
-                onClick={toggleModal}
+                onClick={closeModal}
               >
                 Cancel
               </button>
