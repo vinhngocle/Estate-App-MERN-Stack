@@ -1,4 +1,5 @@
-export declare class Book {
+import { AbstractEntity } from './Abstract.entity';
+export declare class Book extends AbstractEntity {
     id: number;
     author: string;
     name: string;

@@ -1,16 +1,25 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
+  Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BookService } from './book.service';
-import { BookSaveDto } from '../dto/BookSaveDto';
+import { BookSaveDto } from '../interfaces/BookSaveDto';
+import { PageDto } from 'src/dtos/PageDto';
+import { BookDto } from 'src/dtos/BookDto';
+import { PageOptionDto } from 'src/dtos/PageOptionsDto';
 
 @Controller('book')
+@UseInterceptors(ClassSerializerInterceptor)
 export class BookController {
   constructor(private bookService: BookService) {}
 
@@ -21,9 +30,11 @@ export class BookController {
   }
 
   @Get()
-  async getAllBook() {
-    const books = await this.bookService.findAll();
-    return books;
+  @HttpCode(HttpStatus.OK)
+  async getAllBook(
+    @Query() pageOptionDto: PageOptionDto,
+  ): Promise<PageDto<BookDto>> {
+    return await this.bookService.findAll(pageOptionDto);
   }
 
   @Get(':id')

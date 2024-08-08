@@ -1,7 +1,11 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Book } from '../typeorm/book.entity';
-import { BookSaveDto } from '../dto/BookSaveDto';
+import { BookSaveDto } from '../interfaces/BookSaveDto';
+import { PageDto } from 'src/dtos/PageDto';
+import { BookDto } from 'src/dtos/BookDto';
+import { PageOptionDto } from 'src/dtos/PageOptionsDto';
+import { PageMetaDto } from 'src/dtos/PageMetaDto';
 
 @Injectable()
 export class BookService {
@@ -9,8 +13,24 @@ export class BookService {
     @Inject('BOOK_REPOSITORY') private bookRepository: Repository<Book>,
   ) {}
 
-  async findAll(): Promise<Book[]> {
-    return this.bookRepository.find();
+  // async findAll(): Promise<Book[]> {
+  //   return this.bookRepository.find();
+  // }
+
+  async findAll(pageOptionDto: PageOptionDto): Promise<PageDto<BookDto>> {
+    const queryBuilder = this.bookRepository.createQueryBuilder('book');
+
+    queryBuilder
+      .orderBy('book.createdAt', pageOptionDto.order)
+      .skip(pageOptionDto.skip)
+      .take(pageOptionDto.take);
+
+    const itemCount = await queryBuilder.getCount();
+    const { entities } = await queryBuilder.getRawAndEntities();
+
+    const pageMetaDto = new PageMetaDto({ pageOptionDto, itemCount });
+
+    return new PageDto(entities, pageMetaDto);
   }
 
   async findById(id: number): Promise<Book> {

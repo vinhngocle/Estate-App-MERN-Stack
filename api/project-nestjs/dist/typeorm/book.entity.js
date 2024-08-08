@@ -11,7 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Book = void 0;
 const typeorm_1 = require("typeorm");
-let Book = class Book {
+const Abstract_entity_1 = require("./Abstract.entity");
+let Book = class Book extends Abstract_entity_1.AbstractEntity {
 };
 exports.Book = Book;
 __decorate([
