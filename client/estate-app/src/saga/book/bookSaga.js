@@ -40,7 +40,10 @@ export function* addBooksSaga(action) {
   try {
     const response = yield call(BookService.createBook, action.payload);
     yield put({ type: ADD_BOOK_SUCCESS, payload: response });
-    // yield call(getBooksSaga);
+
+    // Fetch the updated list of books after adding the new book
+    const pagination = { page: 1, take: action.payload.take || 5 }; // Adjust as needed
+    yield call(getBooksSaga, { payload: pagination });
   } catch (error) {
     yield put({ type: ADD_BOOK_FAILURE, payload: error.message });
   }
@@ -50,7 +53,10 @@ export function* removeBooksSaga(action) {
   try {
     const response = yield call(BookService.removeBook, action.payload);
     yield put({ type: ADD_BOOK_SUCCESS, payload: response });
-    yield call(getBooksSaga);
+
+    // Fetch the updated list of books after delete the new book
+    const pagination = { page: 1, take: action.payload.take || 5 }; // Adjust as needed
+    yield call(getBooksSaga, { payload: pagination });
   } catch (error) {
     yield put({ type: ADD_BOOK_FAILURE, payload: error.message });
   }
@@ -64,7 +70,12 @@ export function* updateBooksSaga(action) {
       action.payload
     );
     yield put({ type: UPDATE_BOOK_SUCCESS, payload: response });
-    yield call(getBooksSaga);
+
+    const pagination = {
+      page: action.payload.take || 1,
+      take: action.payload.take || 5,
+    }; // Adjust as needed
+    yield call(getBooksSaga, { payload: pagination });
   } catch (error) {
     yield put({ type: UPDATE_BOOK_FAILURE, payload: error.message });
   }

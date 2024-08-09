@@ -56,16 +56,16 @@ function BookPage() {
   };
 
   const handleFormSubmit = async (newBook) => {
-    setParamPaging({
-      ...paramPaging,
-      page: 1,
-    });
+    // setParamPaging({
+    //   ...paramPaging,
+    //   page: pageNumber,
+    // });
+    console.log("paramPaging", paramPaging);
 
     if (newBook.id === "" || newBook.id === null) {
       await dispatch(addBook(newBook));
-      await dispatch(getBooks(paramPaging));
     } else {
-      await dispatch(updateBook(newBook));
+      await dispatch(updateBook({ ...newBook }));
     }
 
     closeModal();
@@ -73,6 +73,7 @@ function BookPage() {
 
   const handleDelete = async (id) => {
     await dispatch(removeBook(id));
+    await dispatch(getBooks(paramPaging));
   };
 
   const handleEdit = async (book) => {

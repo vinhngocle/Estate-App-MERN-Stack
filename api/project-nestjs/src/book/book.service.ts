@@ -41,7 +41,7 @@ export class BookService {
     }
 
     queryBuilder
-      .orderBy('book.created_at', pageOptionDto.order)
+      .orderBy('book.updated_at', pageOptionDto.order)
       .skip(pageOptionDto.skip)
       .take(pageOptionDto.take);
 

@@ -40,7 +40,7 @@ function Table({
                   name="hs-table-with-pagination-search"
                   id="hs-table-with-pagination-search"
                   className="border py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                  placeholder="Search for items"
+                  placeholder="Search name or author"
                 />
                 <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
                   <svg
