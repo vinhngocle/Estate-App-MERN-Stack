@@ -24,10 +24,14 @@ function BookPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [titleModal, setTitleModal] = useState("");
+  const [paramPaging, setParamPaging] = useState({
+    page: 1,
+    take: 5,
+  });
 
   useEffect(() => {
-    dispatch(getBooks());
-  }, [dispatch]);
+    dispatch(getBooks(paramPaging));
+  }, [dispatch, paramPaging]);
 
   if (isLoading) {
     return <div className="p-4 text-center">Loading...</div>;
@@ -52,25 +56,18 @@ function BookPage() {
   };
 
   const handleFormSubmit = async (newBook) => {
-    // const newBook = {
-    //   id: form.id,
-    //   name: form.name,
-    //   author: form.author,
-    //   rating: form.rating,
-    //   status: form.status,
-    // };
-    console.log("newbook", newBook);
+    setParamPaging({
+      ...paramPaging,
+      page: 1,
+    });
 
     if (newBook.id === "" || newBook.id === null) {
       await dispatch(addBook(newBook));
+      await dispatch(getBooks(paramPaging));
     } else {
       await dispatch(updateBook(newBook));
     }
-    // const query = {
-    //   page: pageNumber,
-    //   take: 5,
-    // };
-    // dispatch(getBooks(query));
+
     closeModal();
   };
 
@@ -91,11 +88,11 @@ function BookPage() {
   };
 
   const handlePageChange = (pageNumber) => {
-    const query = {
+    setParamPaging({
+      ...paramPaging,
       page: pageNumber,
-      take: 5,
-    };
-    dispatch(getBooks(query));
+    });
+    dispatch(getBooks(paramPaging));
   };
 
   const cleanForm = () => {

@@ -17,6 +17,7 @@ import { BookSaveDto } from '../interfaces/BookSaveDto';
 import { PageDto } from 'src/dtos/PageDto';
 import { BookDto } from 'src/dtos/BookDto';
 import { PageOptionDto } from 'src/dtos/PageOptionsDto';
+import { SearchBookDto } from 'src/dtos/SearchBookDto';
 
 @Controller('book')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -32,8 +33,9 @@ export class BookController {
   @HttpCode(HttpStatus.OK)
   async getAllBook(
     @Query() pageOptionDto: PageOptionDto,
+    @Query() searchBookDto?: SearchBookDto,
   ): Promise<PageDto<BookDto>> {
-    return await this.bookService.findAll(pageOptionDto);
+    return await this.bookService.findAll(pageOptionDto, searchBookDto);
   }
 
   @Get(':id')

@@ -40,7 +40,7 @@ export function* addBooksSaga(action) {
   try {
     const response = yield call(BookService.createBook, action.payload);
     yield put({ type: ADD_BOOK_SUCCESS, payload: response });
-    yield call(getBooksSaga);
+    // yield call(getBooksSaga);
   } catch (error) {
     yield put({ type: ADD_BOOK_FAILURE, payload: error.message });
   }

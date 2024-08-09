@@ -4,4 +4,5 @@ export interface BookSaveDto {
   name: string;
   rating: string;
   status: string;
+  created_at: Date;
 }

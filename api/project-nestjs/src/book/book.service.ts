@@ -6,6 +6,7 @@ import { PageDto } from 'src/dtos/PageDto';
 import { BookDto } from 'src/dtos/BookDto';
 import { PageOptionDto } from 'src/dtos/PageOptionsDto';
 import { PageMetaDto } from 'src/dtos/PageMetaDto';
+import { SearchBookDto } from 'src/dtos/SearchBookDto';
 
 @Injectable()
 export class BookService {
@@ -17,11 +18,30 @@ export class BookService {
   //   return this.bookRepository.find();
   // }
 
-  async findAll(pageOptionDto: PageOptionDto): Promise<PageDto<BookDto>> {
+  async findAll(
+    pageOptionDto: PageOptionDto,
+    searchBookDto: SearchBookDto,
+  ): Promise<PageDto<BookDto>> {
     const queryBuilder = this.bookRepository.createQueryBuilder('book');
 
+    if (searchBookDto?.name) {
+      queryBuilder
+        .where('book.name LIKE :name', {
+          name: `%${searchBookDto.name}%`,
+        })
+        .getMany();
+    }
+
+    if (searchBookDto?.author) {
+      queryBuilder
+        .where('book.author LIKE :author', {
+          author: `%${searchBookDto.author}%`,
+        })
+        .getMany();
+    }
+
     queryBuilder
-      .orderBy('book.createdAt', pageOptionDto.order)
+      .orderBy('book.created_at', pageOptionDto.order)
       .skip(pageOptionDto.skip)
       .take(pageOptionDto.take);
 

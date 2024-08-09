@@ -13,4 +13,7 @@ export class BookDto {
 
   @ApiProperty()
   public status: string;
+
+  @ApiProperty()
+  created_at: Date;
 }
