@@ -44,7 +44,6 @@ function PostPage() {
 
   const handleAddPost = () => {
     const _id = uuidv4();
-    console.log("_id", _id);
     const post = {
       id: _id,
       text: state.text,

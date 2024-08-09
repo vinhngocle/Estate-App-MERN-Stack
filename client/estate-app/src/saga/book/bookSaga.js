@@ -29,9 +29,7 @@ import {
 
 export function* getBooksSaga(action) {
   try {
-    console.log("getBooksSaga", action.payload);
     const response = yield call(BookService.getBooks, action.payload);
-    // console.log("books", books);
     yield put({ type: GET_BOOKS_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: GET_BOOKS_FAILURE, payload: error.message });

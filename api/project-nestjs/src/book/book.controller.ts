@@ -25,7 +25,6 @@ export class BookController {
 
   @Post()
   async createBook(@Body() dto: BookSaveDto) {
-    console.log('insert controller');
     return await this.bookService.insert(dto);
   }
 

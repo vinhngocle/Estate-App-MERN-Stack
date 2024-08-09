@@ -14,7 +14,6 @@ function BookPage() {
   const { data, meta, isLoading, error } = useSelector(
     (state) => state.getBooks
   );
-  console.log(meta);
   const [form, setForm] = useState({
     id: "",
     name: "",
@@ -52,20 +51,26 @@ function BookPage() {
     openModal();
   };
 
-  const handleSave = async () => {
-    const newBook = {
-      id: form.id,
-      name: form.name,
-      author: form.author,
-      rating: form.rating,
-      status: form.status,
-    };
+  const handleFormSubmit = async (newBook) => {
+    // const newBook = {
+    //   id: form.id,
+    //   name: form.name,
+    //   author: form.author,
+    //   rating: form.rating,
+    //   status: form.status,
+    // };
+    console.log("newbook", newBook);
 
     if (newBook.id === "" || newBook.id === null) {
       await dispatch(addBook(newBook));
     } else {
       await dispatch(updateBook(newBook));
     }
+    // const query = {
+    //   page: pageNumber,
+    //   take: 5,
+    // };
+    // dispatch(getBooks(query));
     closeModal();
   };
 
@@ -88,6 +93,7 @@ function BookPage() {
   const handlePageChange = (pageNumber) => {
     const query = {
       page: pageNumber,
+      take: 5,
     };
     dispatch(getBooks(query));
   };
@@ -109,7 +115,7 @@ function BookPage() {
         <ModalCreate
           titleModal={titleModal}
           closeModal={closeModal}
-          handleFormSubmit={handleSave}
+          handleFormSubmit={handleFormSubmit}
           bookForm={form}
           handleStateChange={setForm}
         />

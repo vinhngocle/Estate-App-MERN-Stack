@@ -63,7 +63,6 @@ export class BookService {
 
   async delete(id: number) {
     const book = await this.bookRepository.findOne({ where: { id } });
-    console.log(book);
     if (!book) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }

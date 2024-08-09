@@ -27,7 +27,6 @@ export const getBooks = (state = initialState, action) => {
       return { ...state, isLoading: true };
     }
     case GET_BOOKS_SUCCESS: {
-      console.log("action.payload", action.payload);
       return {
         ...state,
         isLoading: false,
