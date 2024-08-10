@@ -18,6 +18,7 @@ interface TableProps {
   handlePageChange: (page: number) => void;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 function Table({
   openModal,
   books,
@@ -170,8 +171,11 @@ function Table({
                       </tr>
                     ))
                   ) : (
-                    <tr className="p-2">
-                      <td>No books available</td>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td className="p-2">No books available</td>
                     </tr>
                   )}
                 </tbody>
@@ -201,7 +205,7 @@ function Table({
                     aria-current={currentpage === i + 1 ? "page" : undefined}
                     onClick={() => handlePageChange(i + 1)}
                   >
-                    {i + 1}
+                    <div>{i + 1}</div>
                   </button>
                 ))}
 
@@ -235,4 +239,5 @@ function Table({
   );
 }
 
-export default Table;
+// eslint-disable-next-line react-refresh/only-export-components
+export default React.memo(Table);

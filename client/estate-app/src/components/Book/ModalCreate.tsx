@@ -1,3 +1,5 @@
+import React from "react";
+
 interface Book {
   id: number;
   author: string;
@@ -14,6 +16,7 @@ interface ModalCreateProps {
   handleStateChange: (value: object) => void;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 function ModalCreate({
   titleModal,
   closeModal,
@@ -167,4 +170,5 @@ function ModalCreate({
   );
 }
 
-export default ModalCreate;
+// eslint-disable-next-line react-refresh/only-export-components
+export default React.memo(ModalCreate);

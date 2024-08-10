@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getBooks,
@@ -9,6 +9,7 @@ import {
 import Table from "../components/Book/Table";
 import ModalCreate from "../components/Book/ModalCreate";
 
+// eslint-disable-next-line react-refresh/only-export-components
 function BookPage() {
   const dispatch = useDispatch();
   const { data, meta, isLoading, error } = useSelector(
@@ -29,8 +30,20 @@ function BookPage() {
     take: 5,
   });
 
+  const didFetchRef = useRef(false);
+
   useEffect(() => {
-    dispatch(getBooks(paramPaging));
+    const fetchBooks = async () => {
+      await dispatch(getBooks(paramPaging));
+    };
+
+    // Fetch data only if it hasn't been fetched yet or paramPaging has changed
+    if (!didFetchRef.current) {
+      fetchBooks();
+      didFetchRef.current = true; // Mark the initial fetch as done
+    } else {
+      fetchBooks(); // Fetch books again when paramPaging changes
+    }
   }, [dispatch, paramPaging]);
 
   if (isLoading) {
@@ -41,13 +54,9 @@ function BookPage() {
     return <div className="p-4 text-center">Error: {error.message}</div>;
   }
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const closeModal = () => setIsModalOpen(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  const openModal = () => setIsModalOpen(true);
 
   const openModalCreate = () => {
     setTitleModal("Create Modal");
@@ -56,12 +65,6 @@ function BookPage() {
   };
 
   const handleFormSubmit = async (newBook) => {
-    // setParamPaging({
-    //   ...paramPaging,
-    //   page: pageNumber,
-    // });
-    console.log("paramPaging", paramPaging);
-
     if (newBook.id === "" || newBook.id === null) {
       await dispatch(addBook(newBook));
     } else {
@@ -89,11 +92,11 @@ function BookPage() {
   };
 
   const handlePageChange = (pageNumber) => {
-    setParamPaging({
-      ...paramPaging,
+    setParamPaging((prev) => ({
+      ...prev,
       page: pageNumber,
-    });
-    dispatch(getBooks(paramPaging));
+    }));
+    // dispatch(getBooks(paramPaging));
   };
 
   const cleanForm = () => {
@@ -133,4 +136,5 @@ function BookPage() {
   );
 }
 
-export default BookPage;
+// eslint-disable-next-line react-refresh/only-export-components
+export default React.memo(BookPage);
