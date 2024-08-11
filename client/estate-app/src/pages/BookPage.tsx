@@ -41,11 +41,12 @@ function BookPage() {
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [titleModal, setTitleModal] = useState("");
   const [paramPaging, setParamPaging] = useState({
     page: 1,
     take: 5,
+    search: "",
   });
+  const [search, setSearch] = useState("");
 
   const didFetchRef = useRef(false);
 
@@ -71,12 +72,16 @@ function BookPage() {
     return <div className="p-4 text-center">Error: {error.message}</div>;
   }
 
+  // if (data.length === 0) {
+  //   console.log("No books available"); // Log to console
+  //   return <div className="p-4 text-center">No books available</div>; // Display message
+  // }
+
   const closeModal = () => setIsModalOpen(false);
 
   const openModal = () => setIsModalOpen(true);
 
   const openModalCreate = () => {
-    setTitleModal("Create Modal");
     cleanForm();
     openModal();
   };
@@ -104,7 +109,6 @@ function BookPage() {
       rating: book.rating,
       status: book.status,
     });
-    setTitleModal("Edit Modal");
     openModal();
   };
 
@@ -112,6 +116,13 @@ function BookPage() {
     setParamPaging((prev) => ({
       ...prev,
       page: pageNumber,
+    }));
+  };
+
+  const handleSearch = () => {
+    setParamPaging((prev) => ({
+      ...prev,
+      search: search,
     }));
   };
 
@@ -130,7 +141,7 @@ function BookPage() {
       {/* form create */}
       {isModalOpen && (
         <ModalCreate
-          titleModal={titleModal}
+          titleModal={form.id ? "Edit Modal" : "Create Modal"}
           closeModal={closeModal}
           handleFormSubmit={handleFormSubmit}
           bookForm={form}
@@ -149,6 +160,9 @@ function BookPage() {
         pageCount={meta.pageCount}
         currentpage={meta.page}
         handlePageChange={handlePageChange}
+        search={search}
+        handleSearch={handleSearch}
+        handleStateChange={setSearch}
       />
     </>
   );

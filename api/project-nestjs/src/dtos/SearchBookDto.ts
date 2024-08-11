@@ -2,8 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class SearchBookDto {
   @ApiProperty()
-  public name?: string;
+  public search?: string;
 
-  @ApiProperty()
-  public author?: string;
+  // @ApiProperty()
+  // public author?: string;
 }

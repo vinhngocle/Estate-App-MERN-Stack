@@ -16,6 +16,9 @@ interface TableProps {
   pageCount: number;
   currentpage: number;
   handlePageChange: (page: number) => void;
+  search: string;
+  handleSearch: () => void;
+  handleStateChange: (value: string) => void;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -27,7 +30,16 @@ function Table({
   pageCount,
   currentpage,
   handlePageChange,
+  search,
+  handleSearch,
+  handleStateChange,
 }: TableProps) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="flex flex-col px-4 py-6">
       <div className="-m-1.5 overflow-x-auto">
@@ -42,6 +54,9 @@ function Table({
                   id="hs-table-with-pagination-search"
                   className="border py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                   placeholder="Search name or author"
+                  value={search}
+                  onChange={(e) => handleStateChange(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
                 <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
                   <svg
@@ -122,7 +137,7 @@ function Table({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {Array.isArray(books) ? (
+                  {Array.isArray(books) && books.length ? (
                     books.map((book) => (
                       <tr key={book.id}>
                         {/* <td className="py-3 ps-4">
@@ -172,10 +187,11 @@ function Table({
                     ))
                   ) : (
                     <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td className="p-2">No books available</td>
+                      <td colSpan={6} className="p-4 text-center">
+                        {books.length === 0
+                          ? "No book match"
+                          : "No book available"}
+                      </td>
                     </tr>
                   )}
                 </tbody>

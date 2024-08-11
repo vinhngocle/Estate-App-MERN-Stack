@@ -24,21 +24,21 @@ export class BookService {
   ): Promise<PageDto<BookDto>> {
     const queryBuilder = this.bookRepository.createQueryBuilder('book');
 
-    if (searchBookDto?.name) {
+    if (searchBookDto?.search) {
       queryBuilder
-        .where('book.name LIKE :name', {
-          name: `%${searchBookDto.name}%`,
+        .where('book.name LIKE :search OR book.author LIKE :search', {
+          search: `%${searchBookDto.search}%`,
         })
         .getMany();
     }
 
-    if (searchBookDto?.author) {
-      queryBuilder
-        .where('book.author LIKE :author', {
-          author: `%${searchBookDto.author}%`,
-        })
-        .getMany();
-    }
+    // if (searchBookDto?.author) {
+    //   queryBuilder
+    //     .where('book.author LIKE :author', {
+    //       author: `%${searchBookDto.author}%`,
+    //     })
+    //     .getMany();
+    // }
 
     queryBuilder
       .orderBy('book.updated_at', pageOptionDto.order)
