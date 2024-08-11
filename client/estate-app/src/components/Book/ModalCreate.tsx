@@ -1,7 +1,7 @@
 import React from "react";
 
 interface Book {
-  id: number;
+  id: number | null;
   author: string;
   name: string;
   rating: string;

@@ -9,14 +9,31 @@ import {
 import Table from "../components/Book/Table";
 import ModalCreate from "../components/Book/ModalCreate";
 
+interface Book {
+  id: number | null;
+  author: string;
+  name: string;
+  rating: string;
+  status: string;
+}
+
+interface RootState {
+  getBooks: {
+    data: Book[];
+    meta: { pageCount: number; page: number };
+    isLoading: boolean;
+    error: Error | null;
+  };
+}
+
 // eslint-disable-next-line react-refresh/only-export-components
 function BookPage() {
   const dispatch = useDispatch();
   const { data, meta, isLoading, error } = useSelector(
-    (state) => state.getBooks
+    (state: RootState) => state.getBooks
   );
-  const [form, setForm] = useState({
-    id: "",
+  const [form, setForm] = useState<Book>({
+    id: null,
     name: "",
     author: "",
     rating: "Excellent",
@@ -64,8 +81,8 @@ function BookPage() {
     openModal();
   };
 
-  const handleFormSubmit = async (newBook) => {
-    if (newBook.id === "" || newBook.id === null) {
+  const handleFormSubmit = async (newBook: Book) => {
+    if (newBook.id === null) {
       await dispatch(addBook(newBook));
     } else {
       await dispatch(updateBook({ ...newBook }));
@@ -74,12 +91,12 @@ function BookPage() {
     closeModal();
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     await dispatch(removeBook(id));
     await dispatch(getBooks(paramPaging));
   };
 
-  const handleEdit = async (book) => {
+  const handleEdit = async (book: Book) => {
     setForm({
       id: book.id,
       name: book.name,
@@ -91,17 +108,16 @@ function BookPage() {
     openModal();
   };
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (pageNumber: number) => {
     setParamPaging((prev) => ({
       ...prev,
       page: pageNumber,
     }));
-    // dispatch(getBooks(paramPaging));
   };
 
   const cleanForm = () => {
     setForm({
-      id: "",
+      id: null,
       name: "",
       author: "",
       rating: "Excellent",
@@ -118,7 +134,9 @@ function BookPage() {
           closeModal={closeModal}
           handleFormSubmit={handleFormSubmit}
           bookForm={form}
-          handleStateChange={setForm}
+          handleStateChange={(value) =>
+            setForm((prev) => ({ ...prev, ...value }))
+          }
         />
       )}
 

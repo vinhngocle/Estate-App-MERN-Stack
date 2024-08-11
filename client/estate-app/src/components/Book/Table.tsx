@@ -1,7 +1,7 @@
 import React from "react";
 
 interface Book {
-  id: number;
+  id: number | null;
   author: string;
   name: string;
   rating: string;
@@ -74,7 +74,7 @@ function Table({
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th scope="col" className="py-3 px-4 pe-0">
+                    {/* <th scope="col" className="py-3 px-4 pe-0">
                       <div className="flex items-center h-5">
                         <input
                           id="hs-table-pagination-checkbox-all"
@@ -88,34 +88,34 @@ function Table({
                           Checkbox
                         </label>
                       </div>
-                    </th>
+                    </th> */}
                     <th
                       scope="col"
-                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                      className="px-6 py-3 text-start text-xs font-medium text-gray-1000 uppercase"
                     >
                       Booke Name
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                      className="px-6 py-3 text-start text-xs font-medium text-gray-1000 uppercase"
                     >
                       Author
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                      className="px-6 py-3 text-start text-xs font-medium text-gray-1000 uppercase"
                     >
                       Status
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                      className="px-6 py-3 text-start text-xs font-medium text-gray-1000 uppercase"
                     >
                       Rating
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase"
+                      className="px-6 py-3 text-end text-xs font-medium text-gray-1000 uppercase"
                     >
                       Action
                     </th>
@@ -125,7 +125,7 @@ function Table({
                   {Array.isArray(books) ? (
                     books.map((book) => (
                       <tr key={book.id}>
-                        <td className="py-3 ps-4">
+                        {/* <td className="py-3 ps-4">
                           <div className="flex items-center h-5">
                             <input
                               id="hs-table-pagination-checkbox-1"
@@ -139,11 +139,11 @@ function Table({
                               Checkbox
                             </label>
                           </div>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                           {book.name}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                           {book.author}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
@@ -163,7 +163,7 @@ function Table({
                           <button
                             type="button"
                             className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none"
-                            onClick={() => handleDelete(book.id)}
+                            onClick={() => handleDelete(Number(book.id))}
                           >
                             <i className="fa-solid fa-trash"></i>
                           </button>
