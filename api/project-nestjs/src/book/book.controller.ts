@@ -13,11 +13,11 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { BookService } from './book.service';
-import { BookSaveDto } from '../interfaces/BookSaveDto';
+import { BookSaveDto } from '../dtos/book/BookSaveDto';
 import { PageDto } from 'src/dtos/PageDto';
-import { BookDto } from 'src/dtos/BookDto';
+import { BookDto } from 'src/dtos/book/BookDto';
 import { PageOptionDto } from 'src/dtos/PageOptionsDto';
-import { SearchBookDto } from 'src/dtos/SearchBookDto';
+import { SearchBookDto } from 'src/dtos/book/SearchBookDto';
 
 @Controller('book')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -25,6 +25,7 @@ export class BookController {
   constructor(private bookService: BookService) {}
 
   @Post()
+  // @HttpCode(HttpStatus.CREATED)
   async createBook(@Body() dto: BookSaveDto) {
     return await this.bookService.insert(dto);
   }
@@ -39,9 +40,9 @@ export class BookController {
   }
 
   @Get(':id')
-  async getBook(@Param('id') id: number) {
-    const book = this.bookService.findById(id);
-    return book;
+  @HttpCode(HttpStatus.OK)
+  async getBook(@Param('id') id: number): Promise<BookDto> {
+    return await this.bookService.findById(id);
   }
 
   @Put(':id')

@@ -1,28 +1,28 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Book } from '../typeorm/book.entity';
-import { BookSaveDto } from '../interfaces/BookSaveDto';
+import { BookSaveDto } from '../dtos/book/BookSaveDto';
 import { PageDto } from 'src/dtos/PageDto';
-import { BookDto } from 'src/dtos/BookDto';
+import { BookDto } from 'src/dtos/book/BookDto';
 import { PageOptionDto } from 'src/dtos/PageOptionsDto';
 import { PageMetaDto } from 'src/dtos/PageMetaDto';
-import { SearchBookDto } from 'src/dtos/SearchBookDto';
+import { SearchBookDto } from 'src/dtos/book/SearchBookDto';
 
 @Injectable()
 export class BookService {
   constructor(
-    @Inject('BOOK_REPOSITORY') private bookRepository: Repository<Book>,
+    @Inject('BOOK_REPOSITORY') private _bookRepository: Repository<Book>,
   ) {}
 
   // async findAll(): Promise<Book[]> {
-  //   return this.bookRepository.find();
+  //   return this._bookRepository.find();
   // }
 
   async findAll(
     pageOptionDto: PageOptionDto,
     searchBookDto: SearchBookDto,
   ): Promise<PageDto<BookDto>> {
-    const queryBuilder = this.bookRepository.createQueryBuilder('book');
+    const queryBuilder = this._bookRepository.createQueryBuilder('book');
 
     if (searchBookDto?.search) {
       queryBuilder
@@ -31,15 +31,6 @@ export class BookService {
         })
         .getMany();
     }
-
-    // if (searchBookDto?.author) {
-    //   queryBuilder
-    //     .where('book.author LIKE :author', {
-    //       author: `%${searchBookDto.author}%`,
-    //     })
-    //     .getMany();
-    // }
-
     queryBuilder
       .orderBy('book.updated_at', pageOptionDto.order)
       .skip(pageOptionDto.skip)
@@ -53,12 +44,18 @@ export class BookService {
     return new PageDto(entities, pageMetaDto);
   }
 
-  async findById(id: number): Promise<Book> {
-    const book = this.bookRepository.findOne({ where: { id } });
-    if (!book) {
-      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
-    }
+  // async findById(id: number): Promise<Book> {
+  //   const book = this._bookRepository.findOne({ where: { id } });
+  //   if (!book) {
+  //     throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+  //   }
 
+  //   return book;
+  // }
+
+  async findById(id: number): Promise<BookDto> {
+    const queryBuilder = this._bookRepository.createQueryBuilder('book');
+    const book = queryBuilder.where('book.id = :id', { id }).getOne();
     return book;
   }
 
@@ -69,23 +66,23 @@ export class BookService {
       rating: dto.rating,
       status: dto.status,
     };
-    return await this.bookRepository.save(newBook);
+    return await this._bookRepository.save(newBook);
   }
 
   async updateById(id: number, dto: BookSaveDto) {
-    const book = await this.bookRepository.findOne({ where: { id } });
+    const book = await this._bookRepository.findOne({ where: { id } });
     if (!book) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
 
-    return await this.bookRepository.update(book.id, dto);
+    return await this._bookRepository.update(book.id, dto);
   }
 
   async delete(id: number) {
-    const book = await this.bookRepository.findOne({ where: { id } });
+    const book = await this._bookRepository.findOne({ where: { id } });
     if (!book) {
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
     }
-    return await this.bookRepository.delete(id);
+    return await this._bookRepository.delete(id);
   }
 }
